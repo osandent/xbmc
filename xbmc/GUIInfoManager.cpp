@@ -584,6 +584,10 @@ const infomap listitem_labels[]= {{ "thumb",            LISTITEM_THUMB },
                                   { "dateadded",        LISTITEM_DATE_ADDED },
                                   { "dbtype",           LISTITEM_DBTYPE },
                                   { "dbid",             LISTITEM_DBID },
+#ifdef HAS_DS_PLAYER
+								  { "itemtype",         LISTITEM_ITEM_TYPE },
+#endif
+
                                   { "stereoscopicmode", LISTITEM_STEREOSCOPIC_MODE },
                                   { "isstereoscopic",   LISTITEM_IS_STEREOSCOPIC }};
 
@@ -4764,6 +4768,14 @@ CStdString CGUIInfoManager::GetItemLabel(const CFileItem *item, int info, CStdSt
     if (item->IsPicture() && (!item->IsZIP() || item->IsRAR() || item->IsCBZ() || item->IsCBR()))
       return item->GetPath();
     break;
+#ifdef HAS_DS_PLAYER
+  case LISTITEM_ITEM_TYPE:
+	  if(item->m_itemType == CFileItem::ITEM_TYPE_BD)
+		  return "bd";
+	  else if(item->m_itemType == CFileItem::ITEM_TYPE_DVD)
+		  return "dvd";
+		break;
+#endif
   case LISTITEM_STUDIO:
     if (item->HasVideoInfoTag())
       return StringUtils::Join(item->GetVideoInfoTag()->m_studio, g_advancedSettings.m_videoItemSeparator);

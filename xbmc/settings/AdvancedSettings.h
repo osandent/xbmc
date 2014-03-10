@@ -144,6 +144,11 @@ class CAdvancedSettings : public ISettingCallback, public ISettingsHandler
     bool  m_omxHWAudioDecode;
     bool  m_omxDecodeStartWithValidFrame;
 
+#ifdef HAS_DS_PLAYER
+	bool m_videoAudioExpandedSelector;
+	bool m_videoSubsExpandedSelector;
+#endif
+
     float m_videoSubsDelayRange;
     float m_videoAudioDelayRange;
     int m_videoSmallStepBackSeconds;
@@ -370,6 +375,9 @@ class CAdvancedSettings : public ISettingCallback, public ISettingsHandler
     DatabaseSettings m_databaseVideo; // advanced video database setup
     DatabaseSettings m_databaseTV;    // advanced tv database setup
     DatabaseSettings m_databaseEpg;   /*!< advanced EPG database setup */
+#ifdef HAS_DS_PLAYER
+	DatabaseSettings m_databaseDSPlayer; // advanced DSPlayer database setup
+#endif
 
     bool m_guiVisualizeDirtyRegions;
     int  m_guiAlgorithmDirtyRegions;

@@ -31,7 +31,10 @@
 #include "OverlayRenderer.h"
 #include <deque>
 #include "PlatformDefs.h"
-
+#ifdef HAS_DS_PLAYER
+#include "WinDsRenderer.h"
+#include "../Dsplayer/IPaintCallback.h"
+#endif
 class CRenderCapture;
 
 namespace DXVA { class CProcessor; }
@@ -40,7 +43,9 @@ namespace VDPAU { class CVdpauRenderPicture; }
 struct DVDVideoPicture;
 
 #define ERRORBUFFSIZE 30
-
+#ifdef HAS_DS_PLAYER
+class IPaintCallback;
+#endif
 class CWinRenderer;
 class CLinuxRenderer;
 class CLinuxRendererGL;
@@ -86,6 +91,27 @@ public:
   bool Configure(unsigned int width, unsigned int height, unsigned int d_width, unsigned int d_height, float fps, unsigned flags, ERenderFormat format, unsigned extended_format,  unsigned int orientation, int buffers = 0);
   bool IsConfigured() const;
 
+#ifdef HAS_DS_PLAYER
+  inline void RegisterCallback(IPaintCallback *callback)
+  {
+	  CSharedLock lock(m_sharedSection);
+	  if (m_pRenderer)
+		  m_pRenderer->RegisterCallback(callback);
+  }
+  inline void UnregisterCallback()
+  {
+	  CSharedLock lock(m_sharedSection);
+	  if (m_pRenderer)
+		  m_pRenderer->UnregisterCallback();
+  }
+  inline void OnAfterPresent()
+  {
+	  if (m_pRenderer)
+		  m_pRenderer->OnAfterPresent();
+  }
+#endif
+
+
   int AddVideoPicture(DVDVideoPicture& picture);
 
   /**
@@ -102,7 +128,11 @@ public:
    * @param sync signals frame, top, or bottom field
    */
   void FlipPage(volatile bool& bStop, double timestamp = 0.0, int source = -1, EFIELDSYNC sync = FS_NONE);
+#ifdef HAS_DS_PLAYER
+  unsigned int PreInit(RENDERERTYPE rendtype = RENDERER_NORMAL);
+#else
   unsigned int PreInit();
+#endif
   void UnInit();
   bool Flush();
 
@@ -121,7 +151,9 @@ public:
   void Reset();
 
   RESOLUTION GetResolution();
-
+#ifdef HAS_DS_PLAYER
+  RENDERERTYPE GetRendererType() { return m_pRendererType; }
+#endif
   static float GetMaximumFPS();
   inline bool IsStarted() { return m_bIsStarted;}
   double GetDisplayLatency() { return m_displayLatency; }
@@ -148,7 +180,11 @@ public:
 #elif HAS_GLES == 2
   CLinuxRendererGLES  *m_pRenderer;
 #elif defined(HAS_DX)
-  CWinRenderer        *m_pRenderer;
+#ifdef HAS_DS_PLAYER
+  CWinBaseRenderer *m_pRenderer;
+#else
+  CWinRenderer *m_pRenderer;
+#endif
 #elif defined(HAS_SDL)
   CLinuxRenderer      *m_pRenderer;
 #endif
@@ -197,6 +233,9 @@ protected:
 
   int m_rendermethod;
 
+#ifdef HAS_DS_PLAYER
+  RENDERERTYPE m_pRendererType;
+#endif
   enum EPRESENTSTEP
   {
     PRESENT_IDLE     = 0

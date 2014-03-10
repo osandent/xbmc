@@ -27,6 +27,7 @@
 
 int64_t CDVDClock::m_systemOffset;
 int64_t CDVDClock::m_systemFrequency;
+int64_t CDVDClock::m_timeBase = DVD_TIME_BASE;
 CCriticalSection CDVDClock::m_systemsection;
 bool CDVDClock::m_ismasterclock;
 CDVDClock *CDVDClock::m_playerclock = NULL;;
@@ -88,11 +89,11 @@ double CDVDClock::WaitAbsoluteClock(double target)
 
   lock.Leave();
 
-  systemtarget = (int64_t)(target / DVD_TIME_BASE * (double)freq);
+  systemtarget = (int64_t)(target / m_timeBase * (double)freq);
   systemtarget += offset;
   systemtarget = g_VideoReferenceClock.Wait(systemtarget);
   systemtarget -= offset;
-  return (double)systemtarget / freq * DVD_TIME_BASE;
+  return (double)systemtarget / freq * m_timeBase;
 }
 
 CDVDClock* CDVDClock::GetMasterClock()
@@ -233,7 +234,7 @@ void CDVDClock::CheckSystemClock()
 
 double CDVDClock::SystemToAbsolute(int64_t system)
 {
-  return DVD_TIME_BASE * (double)(system - m_systemOffset) / m_systemFrequency;
+  return m_timeBase * (double)(system - m_systemOffset) / m_systemFrequency;
 }
 
 double CDVDClock::SystemToPlaying(int64_t system)
@@ -255,6 +256,6 @@ double CDVDClock::SystemToPlaying(int64_t system)
   else
     current = system;
 
-  return DVD_TIME_BASE * (double)(current - m_startClock) / m_systemUsed + m_iDisc;
+  return m_timeBase * (double)(current - m_startClock) / m_systemUsed + m_iDisc;
 }
 

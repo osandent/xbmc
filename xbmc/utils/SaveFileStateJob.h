@@ -26,6 +26,9 @@
 #include "pvr/recordings/PVRRecordings.h"
 #include "settings/MediaSettings.h"
 #include "network/upnp/UPnP.h"
+#ifdef HAS_DS_PLAYER
+#include "DSPlayerDatabase.h"
+#endif
 
 class CSaveFileStateJob : public CJob
 {
@@ -73,7 +76,21 @@ bool CSaveFileStateJob::DoWork()
     {
       std::string redactPath = CURL::GetRedacted(progressTrackingFile);
       CLog::Log(LOGDEBUG, "%s - Saving file state for video item %s", __FUNCTION__, redactPath.c_str());
-
+#ifdef HAS_DS_PLAYER
+	  CDSPlayerDatabase dspdb;
+	  if(!dspdb.Open())
+	  {
+		  CLog::Log(LOGWARNING, "%s - Unable to open DSPlayer database. Can not save file state!", __FUNCTION__);
+	  }
+	  else if (m_bookmark.timeInSeconds <= 0.0f)
+	  {
+		  dspdb.ClearEditionOfFile(progressTrackingFile);
+	  }
+	  else if(m_bookmark.edition.IsSet())
+	  {
+		  dspdb.AddEdition(progressTrackingFile, m_bookmark.edition);
+	  }
+#endif
       CVideoDatabase videodatabase;
       if (!videodatabase.Open())
       {
