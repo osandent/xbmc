@@ -585,6 +585,28 @@ HRESULT CFGLoader::InsertFilter(const CStdString& filterName, SFilterInfos& f)
   return hr;
 }
 
+void CFGLoader::SettingOptionsDSAudioRendererFiller(const CSetting *setting, std::vector< std::pair<std::string, std::string> > &list, std::string &current)
+{
+  /*
+  current = ((const CSettingString*)setting)->GetValue();
+  std::string firstDevice;
+  */
+
+  list.push_back(std::make_pair("System Default", "System Default"));
+
+   CAudioEnumerator p_dsound;
+   std::vector<DSFilterInfo> deviceList;
+   p_dsound.GetAudioRenderers(deviceList);
+   std::vector<DSFilterInfo>::const_iterator iter = deviceList.begin();
+   
+	for (int i = 1; iter != deviceList.end(); i++)
+	{
+		DSFilterInfo dev = *iter;
+		list.push_back(std::make_pair(dev.lpstrName,dev.lpstrName));
+		++iter;
+	}
+}
+
 bool CFGLoader::LoadFilterCoreFactorySettings( const CStdString& fileStr, ESettingsType type, bool clear )
 {
   if (clear)
