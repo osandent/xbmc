@@ -1633,14 +1633,6 @@ void CEVRAllocatorPresenter::GetMixerThread()
           CAutoLock AutoLock(&m_ImageProcessingLock);
           bDoneSomething = GetImageFromMixer();
         }
-
-		if(m_bUpdateDisplayMode)
-		{
-			CAutoLock lock (&m_UpdateLock);
-			UpdateDisplayMode();
-			m_bUpdateDisplayMode = false;
-		}
-
         if (m_rtTimePerFrame == 0 && bDoneSomething)
         {
           //CAutoLock lock(this);
