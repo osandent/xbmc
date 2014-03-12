@@ -41,6 +41,8 @@
 #include "PixelShaderList.h"
 #include "settings/MediaSettings.h"
 #include "DSPlayer.h"
+#include "DVDClock.h"
+
 
 #ifndef TRACE
 #define TRACE(x)
@@ -218,6 +220,7 @@ CDX9AllocatorPresenter::CDX9AllocatorPresenter(HWND hWnd, HRESULT& hr, bool bIsE
   , m_hVSyncThread(NULL)
   , m_hEvtQuit(NULL)
   , m_bscShader("contrast_brightness.psh", "ps_2_0")
+  , m_bUpdateDisplayMode(false)
 {
   g_Windowing.Register(this);
   g_renderManager.PreInit(RENDERER_DSHOW);
@@ -811,17 +814,11 @@ HRESULT CDX9AllocatorPresenter::CreateDevice(CStdString &_Error)
   m_pResizerPixelShader[2] = 0;
   m_pResizerPixelShader[3] = 0;
 
-  D3DDISPLAYMODE d3ddm;
-  HRESULT hr = S_OK;
-  if(FAILED(m_pD3D->GetAdapterDisplayMode(GetAdapter(m_pD3D), &d3ddm)))
+  if(FAILED(UpdateDisplayMode()))
   {
     _Error += L"GetAdapterDisplayMode failed\n";
     return E_UNEXPECTED;
   }
-
-  m_RefreshRate = d3ddm.RefreshRate;
-  m_DisplayType = d3ddm.Format;
-  m_ScreenSize.SetSize(d3ddm.Width, d3ddm.Height);
 
   D3DPRESENT_PARAMETERS pp;
   ZeroMemory(&pp, sizeof(pp));
@@ -834,13 +831,6 @@ HRESULT CDX9AllocatorPresenter::CreateDevice(CStdString &_Error)
 
   m_bAlternativeVSync = g_dsSettings.pRendererSettings->alterativeVSync;
   m_bHighColorResolution = m_bIsEVR && ((CEVRRendererSettings *)g_dsSettings.pRendererSettings)->highColorResolution;
-
-  if(FAILED(hr))
-  {
-    _Error += "CreateDevice failed\n";
-
-    return hr;
-  }
 
   //
   m_filter = D3DTEXF_NONE;
@@ -1913,6 +1903,11 @@ STDMETHODIMP_(bool) CDX9AllocatorPresenter::Paint(bool fAll)
 
   if(g_renderManager.IsConfigured() && !rDstVid.IsRectEmpty())
   {
+
+	bool isStop = (CDSPlayer::PlayerState == DSPLAYER_CLOSED);
+	int buffer = g_renderManager.WaitForBuffer(isStop, 1 + DVD_MSEC_TO_TIME(500));
+	if (buffer < 0) return(false);
+	
     if(m_pVideoTexture[m_nCurSurface])
     {
       Com::SmartPtr<IDirect3DTexture9> pVideoTexture = m_pVideoTexture[m_nCurSurface];
@@ -2801,4 +2796,17 @@ void CDX9AllocatorPresenter::OnAfterPresent()
     --m_OrderedPaint;
 }
 
+HRESULT CDX9AllocatorPresenter::UpdateDisplayMode()
+{
+	D3DDISPLAYMODE d3ddm;
+	HRESULT hr = S_OK;
+	if(SUCCEEDED(hr = m_pD3D->GetAdapterDisplayMode(GetAdapter(m_pD3D), &d3ddm)))
+	{
+		m_RefreshRate = d3ddm.RefreshRate;
+		m_DisplayType = d3ddm.Format;
+		m_ScreenSize.SetSize(d3ddm.Width, d3ddm.Height);
+	}
+
+	return hr;
+}
 #endif

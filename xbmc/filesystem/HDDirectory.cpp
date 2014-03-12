@@ -26,6 +26,9 @@
 #include "utils/AutoPtrHandle.h"
 #include "utils/AliasShortcutUtils.h"
 #include "utils/URIUtils.h"
+#ifdef HAS_DS_PLAYER
+#include "File.h"
+#endif
 
 #ifdef TARGET_WINDOWS
 #include "utils/CharsetConverter.h"
@@ -113,7 +116,12 @@ bool CHDDirectory::GetDirectory(const CStdString& strPath1, CFileItemList &items
             pItem->m_bIsFolder = true;
             FileTimeToLocalFileTime(&wfd.ftLastWriteTime, &localTime);
             pItem->m_dateTime=localTime;
-
+#ifdef HAS_DS_PLAYER
+			if(XFILE::CFile::Exists(itemPath + "BDMV\\index.bdmv"))
+			{
+				pItem->m_itemType = CFileItem::ITEM_TYPE_BD;
+			}
+#endif
             if (wfd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN)
               pItem->SetProperty("file:hidden", true);
             items.Add(pItem);

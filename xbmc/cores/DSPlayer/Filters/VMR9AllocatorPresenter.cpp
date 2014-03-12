@@ -618,6 +618,13 @@ STDMETHODIMP CVMR9AllocatorPresenter::PresentImage(DWORD_PTR dwUserID, VMR9Prese
 {
   CheckPointer(m_pIVMRSurfAllocNotify, E_UNEXPECTED);
 
+  if(m_bUpdateDisplayMode)
+  {
+	  CAutoLock lock (&m_UpdateLock);
+	  UpdateDisplayMode();
+	  m_bUpdateDisplayMode = false;
+  }
+
   if (m_rtTimePerFrame == 0 || m_bNeedCheckSample || !g_renderManager.IsConfigured())
   {
     m_bNeedCheckSample = false;

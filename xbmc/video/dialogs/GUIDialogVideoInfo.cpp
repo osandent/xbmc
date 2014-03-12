@@ -54,6 +54,9 @@
 #include "filesystem/Directory.h"
 #include "filesystem/VideoDatabaseDirectory.h"
 #include "filesystem/VideoDatabaseDirectory/QueryParams.h"
+#ifdef HAS_DS_PLAYER
+#include "DSPlayerDatabase.h"
+#endif
 #ifdef HAS_UPNP
 #include "network/upnp/UPnP.h"
 #endif
@@ -1148,9 +1151,14 @@ bool CGUIDialogVideoInfo::MarkWatched(const CFileItemPtr &item, bool bMark)
   }
 
   CVideoDatabase database;
-  if (!database.Open())
-    return false;
 
+#ifdef HAS_DS_PLAYER
+  CDSPlayerDatabase dspdb;
+  if (!database.Open() && !dspdb.Open()) return false;
+#else
+  if (!database.Open()) return false;
+#endif
+    
   CFileItemList items;
   if (item->m_bIsFolder)
   {
@@ -1180,15 +1188,21 @@ bool CGUIDialogVideoInfo::MarkWatched(const CFileItemPtr &item, bool bMark)
     {
       // Clear resume bookmark
       if (bMark)
-        database.ClearBookMarksOfFile(pTmpItem->GetPath(), CBookmark::RESUME);
-
+	  {
+#ifdef HAS_DS_PLAYER
+			  dspdb.ClearEditionOfFile(pTmpItem->GetPath());
+#endif
+			  database.ClearBookMarksOfFile(pTmpItem->GetPath(), CBookmark::RESUME);
+		  }
       database.SetPlayCount(*pTmpItem, bMark ? 1 : 0);
     }
+
   }
 
-  database.Close();
+    database.Close();
 
   return true;
+
 }
 
 bool CGUIDialogVideoInfo::CanDeleteVideoItem(const CFileItemPtr &item)

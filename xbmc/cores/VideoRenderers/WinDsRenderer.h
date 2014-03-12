@@ -68,6 +68,11 @@ public:
 
   virtual void         AutoCrop(bool bCrop);
   void                 RenderUpdate(bool clear, DWORD flags = 0, DWORD alpha = 255);
+
+  //virtual unsigned int GetProcessorSize();
+  virtual void         SetBufferSize(int numBuffers) { m_neededBuffers = numBuffers; }
+  virtual unsigned int GetMaxBufferSize() { return NUM_BUFFERS; }
+
 protected:
   virtual void         Render(DWORD flags);
 
@@ -75,6 +80,8 @@ protected:
   IPaintCallback*      m_paintCallback;
   DWORD                m_clearColour;
   unsigned int         m_flags;
+
+  int                  m_neededBuffers;
 };
 
 #else
