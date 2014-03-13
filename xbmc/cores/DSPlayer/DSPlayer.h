@@ -192,6 +192,10 @@ public:
   virtual CStdString GetAudioCodecName() { return (CStreamsManager::Get()) ? CStreamsManager::Get()->GetAudioCodecName() : ""; }
   virtual CStdString GetVideoCodecName() { return (CStreamsManager::Get()) ? CStreamsManager::Get()->GetVideoCodecName() : ""; }
 
+  virtual void GetVideoStreamInfo(SPlayerVideoStreamInfo &info);
+  virtual void GetAudioStreamInfo(int index, SPlayerAudioStreamInfo &info);
+  virtual void GetSubtitleStreamInfo(int index, SPlayerSubtitleStreamInfo &info);
+
   virtual void SeekTime(__int64 iTime = 0);
   virtual __int64 GetTime() { CSingleLock lock(m_StateSection); return llrint(DS_TIME_TO_MSEC(g_dsGraph->GetTime())); }
   virtual __int64 GetTotalTime() { CSingleLock lock(m_StateSection); return llrint(DS_TIME_TO_MSEC(g_dsGraph->GetTotalTime())); }

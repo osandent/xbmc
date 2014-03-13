@@ -302,6 +302,33 @@ bool CDSPlayer::CloseFile(bool reopen)
   return true;
 }
 
+void CDSPlayer::GetVideoStreamInfo(SPlayerVideoStreamInfo &info)
+{
+	info.width  = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetPictureWidth() : 0;
+	info.height = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetPictureHeight() : 0;
+	info.videoCodecName = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetVideoCodecName() : "";
+	info.videoAspectRatio = info.width / info.height;
+	info.stereoMode == "mono";
+}
+
+
+void CDSPlayer::GetAudioStreamInfo(int index, SPlayerAudioStreamInfo &info)
+{
+	info.bitrate = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetBitsPerSample() : 0;
+    CStdString strStreamName;
+	if (CStreamsManager::Get()) CStreamsManager::Get()->GetAudioStreamName(index,strStreamName);
+	info.language = strStreamName;
+    info.channels = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetChannels() : 0;
+    info.audioCodecName = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetAudioCodecName() : "";
+}
+
+void CDSPlayer::GetSubtitleStreamInfo(int index, SPlayerSubtitleStreamInfo &info)
+{
+	CStdString strStreamName;
+	if (CStreamsManager::Get()) CStreamsManager::Get()->SubtitleManager->GetSubtitleName(index, strStreamName);
+	info.language = strStreamName;
+}
+
 bool CDSPlayer::IsPlaying() const
 {
   return !m_bStop;
@@ -397,6 +424,8 @@ void CDSPlayer::Process()
 	}
 
 	g_dsSettings.pRendererSettings->bAllowFullscreen = m_PlayerOptions.fullscreen;
+
+	if(m_PlayerOptions.identify == false) m_callback.OnPlayBackStarted();
 
 	while (!m_bStop && PlayerState != DSPLAYER_CLOSED && PlayerState != DSPLAYER_LOADING)
 		HandleMessages();
