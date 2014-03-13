@@ -41,7 +41,6 @@
 #include "PixelShaderList.h"
 #include "settings/MediaSettings.h"
 #include "DSPlayer.h"
-#include "DVDClock.h"
 
 #ifndef TRACE
 #define TRACE(x)
@@ -1914,10 +1913,6 @@ STDMETHODIMP_(bool) CDX9AllocatorPresenter::Paint(bool fAll)
 
   if(g_renderManager.IsConfigured() && !rDstVid.IsRectEmpty())
   {
-
-	bool isStop = (CDSPlayer::PlayerState == DSPLAYER_CLOSED);
-	int buffer = g_renderManager.WaitForBuffer(isStop, 1 + DVD_MSEC_TO_TIME(500));
-	if (buffer < 0) return(false);
 
     if(m_pVideoTexture[m_nCurSurface])
     {
