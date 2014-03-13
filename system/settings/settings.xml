@@ -998,7 +998,7 @@
       <group id="1">
         <setting id="dsplayer.defaultvideoplayer" type="boolean" label="55031" help="">
           <level>0</level>
-          <default>true</default>
+          <default>false</default>
           <control type="toggle" />
         </setting>
         <setting id="dsplayer.forcenondefaultrenderer" type="boolean" label="55001" help="">
