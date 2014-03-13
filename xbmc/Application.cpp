@@ -2230,7 +2230,12 @@ void CApplication::Render()
     m_bPresentFrame = false;
     if (!extPlayerActive && g_graphicsContext.IsFullScreenVideo() && !m_pPlayer->IsPausedPlayback() && g_renderManager.RendererHandlesPresent())
     {
-      m_bPresentFrame = g_renderManager.FrameWait(100);
+
+	if (m_pPlayer->GetCurrentPlayer() == EPC_DSPLAYER)
+			m_bPresentFrame = g_renderManager.FrameWait(5);
+		else
+			m_bPresentFrame = g_renderManager.FrameWait(100);
+
       hasRendered = true;
     }
     else
