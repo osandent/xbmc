@@ -998,7 +998,7 @@
       <group id="1">
         <setting id="dsplayer.defaultvideoplayer" type="boolean" label="55031" help="">
           <level>0</level>
-          <default>false</default>
+          <default>true</default>
           <control type="toggle" />
         </setting>
         <setting id="dsplayer.forcenondefaultrenderer" type="boolean" label="55001" help="">
@@ -1018,7 +1018,7 @@
       <group id="2">
         <setting id="dsplayer.autofiltersettings" type="boolean" label="55021" help="">
           <level>0</level>
-          <default>true</default>
+          <default>false</default>
           <control type="toggle" />
         </setting>
         <setting id="dsplayer.showbdtitlechoice" type="boolean" label="55030" help="">
