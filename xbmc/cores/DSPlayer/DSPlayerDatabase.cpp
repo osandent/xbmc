@@ -59,31 +59,16 @@ int CDSPlayerDatabase::GetSchemaVersion() const
 	return 1;
 }
 
-bool CDSPlayerDatabase::CreateDatabase()
+void CDSPlayerDatabase::CreateTables() 
 {
-	BeginTransaction();
-	try
-	{
-		CDatabase::CreateDatabase();
+	CLog::Log(LOGINFO, "create edition table");
+	m_pDS->exec("CREATE TABLE edition (idEdition integer primary key, file text, editionName text, editionNumber integer)\n");
+}
 
-		CLog::Log(LOGINFO, "create edition table");
-		m_pDS->exec("CREATE TABLE edition (idEdition integer primary key, file text, editionName text, editionNumber integer)\n");
+void CDSPlayerDatabase::CreateAnalytics()
+{
 
-		m_pDS->exec("CREATE INDEX idxEdition ON edition (file)");
-
-		//CreateTables();
-		//CreateAnalytics();
-
-	}
-	catch (...)
-	{
-		CLog::Log(LOGERROR, "%s unable to create tables:%i", __FUNCTION__, (int)GetLastError());
-		RollbackTransaction();
-		return false;
-	}
-	CommitTransaction();
-
-	return true;
+	m_pDS->exec("CREATE INDEX idxEdition ON edition (file)");
 }
 
 bool CDSPlayerDatabase::GetResumeEdition(const CStdString& strFilenameAndPath, CEdition &edition)
