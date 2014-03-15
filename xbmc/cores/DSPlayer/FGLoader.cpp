@@ -325,14 +325,14 @@ HRESULT CFGLoader::InsertVideoRenderer()
   // TODO: Use a listbox instead of a checkbox on the GUI. Simpler and easier
   if (g_sysinfo.IsWindowsVersionAtLeast(CSysInfo::WindowsVersionVista))
   {
-    if (CSettings::Get().GetBool("dsplayer.forcenondefaultrenderer"))
+    if (CSettings::Get().GetBool("dsplayer.forcenodefrendalvista"))
       CGraphFilters::Get()->SetCurrentRenderer(DIRECTSHOW_RENDERER_VMR9);
     else 
       CGraphFilters::Get()->SetCurrentRenderer(DIRECTSHOW_RENDERER_EVR);
   }
   else
   {
-    if (CSettings::Get().GetBool("dsplayer.forcenondefaultrenderer"))
+    if (CSettings::Get().GetBool("dsplayer.forcenodefrendbevista"))
       CGraphFilters::Get()->SetCurrentRenderer(DIRECTSHOW_RENDERER_EVR);
     else 
       CGraphFilters::Get()->SetCurrentRenderer(DIRECTSHOW_RENDERER_VMR9);

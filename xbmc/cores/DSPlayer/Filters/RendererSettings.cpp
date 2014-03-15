@@ -56,12 +56,12 @@ void CDSSettings::Initialize()
   // TODO: Use a listbox instead of a checkbox on the GUI. Simpler and easier
   if (g_sysinfo.IsWindowsVersionAtLeast(CSysInfo::WindowsVersionVista))
   {
-    if (!CSettings::Get().GetBool("dsplayer.forcenondefaultrenderer"))
+    if (!CSettings::Get().GetBool("dsplayer.forcenodefrendalvista"))
       isEVR = true;
   }
   else
   {
-    if (CSettings::Get().GetBool("dsplayer.forcenondefaultrenderer"))
+    if (CSettings::Get().GetBool("dsplayer.forcenodefrendbevista"))
       isEVR = true;
   }
 
