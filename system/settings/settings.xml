@@ -1042,9 +1042,24 @@
           <default>true</default>
           <control type="toggle" />
         </setting>
-        <setting id="dsplayer.forcenondefaultrenderer" type="boolean" label="55001" help="">
+        <setting id="dsplayer.forcenodefrendalvista" type="boolean" label="55001" help="">
           <level>0</level>
           <default>false</default>
+          <dependencies>
+            <dependency type="visible">
+		<condition on="property" operator="is" name="IsWindowsVersionAtLeast" />
+	    </dependency>
+          </dependencies>
+          <control type="toggle" />
+        </setting>
+        <setting id="dsplayer.forcenodefrendbevista" type="boolean" label="55002" help="">
+          <level>0</level>
+          <default>false</default>
+          <dependencies>
+            <dependency type="visible">
+		<condition on="property" operator="!is" name="IsWindowsVersionAtLeast" />
+	    </dependency>
+          </dependencies>
           <control type="toggle" />
         </setting>
         <setting id="dsplayer.audiorenderer" type="string" label="55003" help="">
