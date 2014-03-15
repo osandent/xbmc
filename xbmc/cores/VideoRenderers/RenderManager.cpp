@@ -317,6 +317,17 @@ void CXBMCRenderManager::Update()
     m_pRenderer->Update();
 }
 
+#ifdef HAS_DS_PLAYER
+void CXBMCRenderManager::NewFrame()
+{
+	{
+	CSingleLock lock(m_presentlock);
+	m_presentstep = PRESENT_READY;
+	}
+	m_presentevent.notifyAll();
+}
+#endif
+
 bool CXBMCRenderManager::FrameWait(int ms)
 {
   XbmcThreads::EndTime timeout(ms);

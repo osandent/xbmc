@@ -2230,14 +2230,9 @@ void CApplication::Render()
     m_bPresentFrame = false;
     if (!extPlayerActive && g_graphicsContext.IsFullScreenVideo() && !m_pPlayer->IsPausedPlayback() && g_renderManager.RendererHandlesPresent())
     {
-
-	if (m_pPlayer->GetCurrentPlayer() == EPC_DSPLAYER)
-			m_bPresentFrame = g_renderManager.FrameWait(5);
-		else
-			m_bPresentFrame = g_renderManager.FrameWait(100);
-
-      hasRendered = true;
-    }
+		m_bPresentFrame = g_renderManager.FrameWait(100);
+		hasRendered = true;
+	}
     else
     {
       // engage the frame limiter as needed

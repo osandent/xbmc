@@ -722,7 +722,7 @@ STDMETHODIMP CVMR9AllocatorPresenter::PresentImage(DWORD_PTR dwUserID, VMR9Prese
   }
 
   //From the new frame the rendermanager will call the dx9allocator paint function
-  g_application.NewFrame();
+  g_renderManager.NewFrame();
   //The wait frame is not needed anymore
   return S_OK;
 }

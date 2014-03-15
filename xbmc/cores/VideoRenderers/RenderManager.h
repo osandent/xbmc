@@ -71,6 +71,9 @@ public:
   void ReleaseRenderCapture(CRenderCapture* capture);
   void Capture(CRenderCapture *capture, unsigned int width, unsigned int height, int flags);
   void ManageCaptures();
+#ifdef HAS_DS_PLAYER
+  void NewFrame();
+#endif
 
   void SetViewMode(int iViewMode);
 
