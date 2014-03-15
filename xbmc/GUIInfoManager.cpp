@@ -4277,6 +4277,21 @@ void CGUIInfoManager::UpdateFPS()
     m_frameCounter = 0;
   }
 }
+#ifdef HAS_DS_PLAYER
+CStdString CGUIInfoManager::GetAudioStreamName(int iStream)
+{
+	SPlayerAudioStreamInfo audio;
+	g_application.m_pPlayer->GetAudioStreamInfo(iStream, audio);
+	return audio.name;
+}
+
+CStdString CGUIInfoManager::GetSubtitleName(int iStream)
+{
+	SPlayerSubtitleStreamInfo subs;
+	g_application.m_pPlayer->GetSubtitleStreamInfo(iStream, subs);
+	return subs.name;
+}
+#endif
 
 void CGUIInfoManager::UpdateAVInfo()
 {

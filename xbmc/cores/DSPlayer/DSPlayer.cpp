@@ -318,7 +318,8 @@ void CDSPlayer::GetAudioStreamInfo(int index, SPlayerAudioStreamInfo &info)
     CStdString strStreamName;
 	if (CStreamsManager::Get()) CStreamsManager::Get()->GetAudioStreamName(index,strStreamName);
 	info.language = strStreamName;
-    info.channels = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetChannels() : 0;
+    info.name = strStreamName;
+	info.channels = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetChannels() : 0;
     info.audioCodecName = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetAudioCodecName() : "";
 }
 
@@ -327,6 +328,7 @@ void CDSPlayer::GetSubtitleStreamInfo(int index, SPlayerSubtitleStreamInfo &info
 	CStdString strStreamName;
 	if (CStreamsManager::Get()) CStreamsManager::Get()->SubtitleManager->GetSubtitleName(index, strStreamName);
 	info.language = strStreamName;
+	info.name = strStreamName;
 }
 
 bool CDSPlayer::IsPlaying() const

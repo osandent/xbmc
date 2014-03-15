@@ -45,6 +45,9 @@
 #ifdef HAS_DS_PLAYER
 #include "guilib/GUIWindowManager.h"
 #include "dialogs/GUIDialogSelect.h"
+#include "dialogs/GUIDialogKaiToast.h"
+#include "GUIInfoManager.h"
+#include "guilib/Key.h"
 #endif
 
 using namespace std;
@@ -135,6 +138,15 @@ void CGUIDialogAudioSubtitleSettings::CreateSettings()
 
 void CGUIDialogAudioSubtitleSettings::AddAudioStreams(unsigned int id)
 {
+
+#ifdef HAS_DS_PLAYER
+	if(g_advancedSettings.m_videoAudioExpandedSelector)
+	{
+		AddButton(id, 460, NULL, g_application.m_pPlayer->GetAudioStreamCount() > 0 ? true : false);
+		return;
+	}
+#endif
+
   SettingInfo setting;
   setting.id = id;
   setting.name = g_localizeStrings.Get(460);
@@ -211,6 +223,15 @@ void CGUIDialogAudioSubtitleSettings::AddAudioStreams(unsigned int id)
 
 void CGUIDialogAudioSubtitleSettings::AddSubtitleStreams(unsigned int id)
 {
+
+#ifdef HAS_DS_PLAYER
+	if(g_advancedSettings.m_videoSubsExpandedSelector)
+	{
+		AddButton(id, 462, NULL, g_application.m_pPlayer->GetSubtitleCount() > 0 ? true : false);
+		return;
+	}
+#endif
+
   SettingInfo setting;
 
   setting.id = id;
@@ -271,6 +292,15 @@ void CGUIDialogAudioSubtitleSettings::OnSettingChanged(SettingInfo &setting)
   }
   else if (setting.id == AUDIO_SETTINGS_STREAM)
   {
+
+#ifdef HAS_DS_PLAYER
+	  if(g_advancedSettings.m_videoAudioExpandedSelector)
+	  {
+		  ShowAudioSelector();
+		  return;
+	  }
+#endif
+
     // first check if it's a stereo track that we can change between stereo, left and right
     if (g_application.m_pPlayer->GetAudioStreamCount() == 1)
     {
@@ -311,10 +341,21 @@ void CGUIDialogAudioSubtitleSettings::OnSettingChanged(SettingInfo &setting)
   {
     g_application.m_pPlayer->SetSubTitleDelay(CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleDelay);
   }
-  else if (setting.id == SUBTITLE_SETTINGS_STREAM && setting.max > 0)
+  else if (setting.id == SUBTITLE_SETTINGS_STREAM)
   {
-    CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream = m_subtitleStream;
-    g_application.m_pPlayer->SetSubtitle(m_subtitleStream);
+
+#ifdef HAS_DS_PLAYER
+	  if(g_advancedSettings.m_videoSubsExpandedSelector)
+	  {
+		  ShowSubsSelector();
+		  return;
+	  }
+#endif
+	  if(setting.max > 0)
+	  {
+		CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream = m_subtitleStream;
+		g_application.m_pPlayer->SetSubtitle(m_subtitleStream);
+	  }
   }
   else if (setting.id == SUBTITLE_SETTINGS_BROWSER)
   {
@@ -445,3 +486,91 @@ bool CGUIDialogAudioSubtitleSettings::SupportsSubtitleFeature(int feature)
   }
   return false;
 }
+
+#ifdef HAS_DS_PLAYER
+void CGUIDialogAudioSubtitleSettings::ShowAudioSelector()
+{
+	int count = g_application.m_pPlayer->GetAudioStreamCount();
+
+	if(count <= 0)
+	{
+		CGUIDialogKaiToast::QueueNotification(CGUIDialogKaiToast::Info, g_localizeStrings.Get(460), g_localizeStrings.Get(55059), 2000, false, 300);
+		return;
+	}
+
+	CGUIDialogSelect *pDlg = (CGUIDialogSelect *) g_windowManager.GetWindow(WINDOW_DIALOG_SELECT);
+	if(!pDlg)
+		return;
+
+	for (int i = 0; i < count; ++i)
+	{
+		CStdString strName;
+		strName = g_infoManager.GetAudioStreamName(i);
+		if (strName.length() == 0)
+			strName = "Unnamed";
+
+		pDlg->Add(strName);
+	}
+
+	int selected = g_application.m_pPlayer->GetAudioStream();
+
+	if(selected < 0) selected = 0;
+
+	pDlg->SetHeading(460);
+	pDlg->SetSelected(selected);
+	pDlg->DoModal();
+
+	selected = pDlg->GetSelectedLabel();
+
+	if (selected != -1 && g_application.m_pPlayer->GetAudioStream() != selected)
+	{
+		CMediaSettings::Get().GetCurrentVideoSettings().m_AudioStream = selected;
+		g_application.m_pPlayer->SetAudioStream(selected);    // Set the audio stream to the one selected
+	}
+}
+
+void CGUIDialogAudioSubtitleSettings::ShowSubsSelector()
+{
+	int count = g_application.m_pPlayer->GetSubtitleCount();
+
+	if(count <= 0)
+	{
+		CGUIDialogKaiToast::QueueNotification(CGUIDialogKaiToast::Info, g_localizeStrings.Get(462), g_localizeStrings.Get(55059), 2000, false, 300);
+		return;
+	}
+
+	CGUIDialogSelect *pDlg = (CGUIDialogSelect *) g_windowManager.GetWindow(WINDOW_DIALOG_SELECT);
+	if(!pDlg)
+		return;
+
+	for (int i = 0; i < count; ++i)
+	{
+		CStdString strName;
+
+		strName = g_infoManager.GetSubtitleName(i);
+		if (strName.length() == 0)
+			strName = "Unnamed";
+
+		pDlg->Add(strName);
+	}
+
+	int selected = g_application.m_pPlayer->GetSubtitle();
+
+	if(selected < 0) selected = 0;
+
+	pDlg->SetHeading(462);
+	pDlg->SetSelected(selected);
+	pDlg->EnableButton(true, CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn ? 55058 : 13397);
+	pDlg->DoModal();
+
+	selected = pDlg->GetSelectedLabel();
+
+	if (selected != -1 && g_application.m_pPlayer->GetSubtitle() != selected)
+	{
+		CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream = selected;
+		g_application.m_pPlayer->SetSubtitle(selected);    // Set the subtitle stream to the one selected
+
+	} else if(pDlg->IsButtonPressed()) // Disable or enable subtitle stream.
+		g_application.OnAction(CAction(ACTION_SHOW_SUBTITLES));
+}
+#endif

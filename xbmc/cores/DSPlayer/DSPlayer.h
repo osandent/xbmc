@@ -117,12 +117,7 @@ public:
   virtual bool Closing()                                      { return PlayerState == DSPLAYER_CLOSING; }
 
 //Audio stream selection
-  virtual int  GetAudioStreamCount() { return (CStreamsManager::Get()) ? CStreamsManager::Get()->GetAudioStreamCount() : 0; }
   virtual int  GetAudioStream() { return (CStreamsManager::Get()) ? CStreamsManager::Get()->GetAudioStream() : 0; }
-  virtual void GetAudioStreamName(int iStream, CStdString &strStreamName) {
-    if (CStreamsManager::Get())
-      CStreamsManager::Get()->GetAudioStreamName(iStream,strStreamName);
-  };
   virtual void SetAudioStream(int iStream) {
     if (CStreamsManager::Get())
       CStreamsManager::Get()->SetAudioStream(iStream);
@@ -153,10 +148,6 @@ public:
 
   virtual int  GetSubtitleCount() { return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitleCount() : 0; }
   virtual int  GetSubtitle() { return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitle() : 0; }
-  virtual void GetSubtitleName(int iStream, CStdString &strStreamName) {
-    if (CStreamsManager::Get())
-      CStreamsManager::Get()->SubtitleManager->GetSubtitleName(iStream, strStreamName);
-  }
   virtual void SetSubtitle(int iStream) {
     if (CStreamsManager::Get())
       CStreamsManager::Get()->SubtitleManager->SetSubtitle(iStream);

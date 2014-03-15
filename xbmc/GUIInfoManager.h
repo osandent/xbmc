@@ -791,6 +791,10 @@ public:
   CStdString GetVersion();
   CStdString GetBuild();
 
+#ifdef HAS_DS_PLAYER
+  CStdString GetAudioStreamName(int iStream);
+  CStdString GetSubtitleName(int iStream);
+#endif
   bool GetDisplayAfterSeek();
   void SetDisplayAfterSeek(unsigned int timeOut = 2500, int seekOffset = 0);
   void SetSeeking(bool seeking) { m_playerSeeking = seeking; };

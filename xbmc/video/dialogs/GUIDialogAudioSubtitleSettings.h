@@ -35,6 +35,11 @@ public:
   static CStdString FormatDelay(float value, float minimum);
   static CStdString FormatDecibel(float value, float minimum);
 
+#ifdef HAS_DS_PLAYER
+  static void ShowAudioSelector();
+  static void ShowSubsSelector();
+#endif
+
 protected:
   virtual void CreateSettings();
   virtual void OnSettingChanged(SettingInfo &setting);
