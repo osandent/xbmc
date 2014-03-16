@@ -15620,6 +15620,14 @@ msgctxt "#55059"
 msgid "Subtitles not found"
 msgstr ""
 
+msgctxt "#55060"
+msgid "Use DSPlayer menu audio selector"
+msgstr ""
+
+msgctxt "#55061"
+msgid "Use DSPlayer menu subtitle selector"
+msgstr ""
+
 msgctxt "#909001"
 msgid "Rus"
 msgstr ""

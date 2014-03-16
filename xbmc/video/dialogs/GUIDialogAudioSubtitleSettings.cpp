@@ -140,7 +140,7 @@ void CGUIDialogAudioSubtitleSettings::AddAudioStreams(unsigned int id)
 {
 
 #ifdef HAS_DS_PLAYER
-	if(g_advancedSettings.m_videoAudioExpandedSelector)
+	if(CSettings::Get().GetBool("dsplayer.videoaudioexpandedselector"))
 	{
 		AddButton(id, 460, NULL, g_application.m_pPlayer->GetAudioStreamCount() > 0 ? true : false);
 		return;
@@ -225,7 +225,7 @@ void CGUIDialogAudioSubtitleSettings::AddSubtitleStreams(unsigned int id)
 {
 
 #ifdef HAS_DS_PLAYER
-	if(g_advancedSettings.m_videoSubsExpandedSelector)
+	if(CSettings::Get().GetBool("dsplayer.videosubsexpandedselector"))
 	{
 		AddButton(id, 462, NULL, g_application.m_pPlayer->GetSubtitleCount() > 0 ? true : false);
 		return;
@@ -294,7 +294,7 @@ void CGUIDialogAudioSubtitleSettings::OnSettingChanged(SettingInfo &setting)
   {
 
 #ifdef HAS_DS_PLAYER
-	  if(g_advancedSettings.m_videoAudioExpandedSelector)
+	  if(CSettings::Get().GetBool("dsplayer.videoaudioexpandedselector"))
 	  {
 		  ShowAudioSelector();
 		  return;
@@ -345,7 +345,7 @@ void CGUIDialogAudioSubtitleSettings::OnSettingChanged(SettingInfo &setting)
   {
 
 #ifdef HAS_DS_PLAYER
-	  if(g_advancedSettings.m_videoSubsExpandedSelector)
+	  if(CSettings::Get().GetBool("dsplayer.videosubsexpandedselector"))
 	  {
 		  ShowSubsSelector();
 		  return;

@@ -87,7 +87,7 @@ bool CPlayerController::OnAction(const CAction &action)
       case ACTION_NEXT_SUBTITLE:
 	{
 #ifdef HAS_DS_PLAYER
-		if(g_advancedSettings.m_videoSubsExpandedSelector)
+		if(CSettings::Get().GetBool("dsplayer.videosubsexpandedselector"))
 		{
 			CGUIDialogAudioSubtitleSettings::ShowSubsSelector();
 			return true;
@@ -207,7 +207,7 @@ bool CPlayerController::OnAction(const CAction &action)
       case ACTION_AUDIO_NEXT_LANGUAGE:
       {
  #ifdef HAS_DS_PLAYER
-		if(g_advancedSettings.m_videoAudioExpandedSelector)
+		if(CSettings::Get().GetBool("dsplayer.videoaudioexpandedselector"))
 		{
 			CGUIDialogAudioSubtitleSettings::ShowAudioSelector();
 			return true;

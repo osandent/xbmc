@@ -144,11 +144,6 @@ class CAdvancedSettings : public ISettingCallback, public ISettingsHandler
     bool  m_omxHWAudioDecode;
     bool  m_omxDecodeStartWithValidFrame;
 
-#ifdef HAS_DS_PLAYER
-	bool m_videoAudioExpandedSelector;
-	bool m_videoSubsExpandedSelector;
-#endif
-
     float m_videoSubsDelayRange;
     float m_videoAudioDelayRange;
     int m_videoSmallStepBackSeconds;

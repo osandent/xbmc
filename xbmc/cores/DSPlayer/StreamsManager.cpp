@@ -1010,8 +1010,8 @@ void CSubtitleManager::Initialize()
   style.charSet = g_charsetConverter.getCharsetIdByName(g_langInfo.GetSubtitleCharSet());
 
   style.borderStyle = CSettings::Get().GetInt("subtitles.border");
-  style.shadowDepthX = style.shadowDepthY = CSettings::Get().GetInt("subtitles.shadow.depth");
-  style.outlineWidthX = style.outlineWidthY = CSettings::Get().GetInt("subtitles.outline.width");
+  style.shadowDepthX = style.shadowDepthY = CSettings::Get().GetInt("subtitles.shadowdepth");
+  style.outlineWidthX = style.outlineWidthY = CSettings::Get().GetInt("subtitles.outlinewidth");
   
   CStdStringW fontName;
   g_charsetConverter.utf8ToW(CSettings::Get().GetString("subtitles.dsfont"), fontName);
