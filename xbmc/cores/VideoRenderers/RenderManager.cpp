@@ -1057,7 +1057,12 @@ void CXBMCRenderManager::PrepareNextRender()
 
   if (m_queued.empty())
   {
-    CLog::Log(LOGERROR, "CRenderManager::PrepareNextRender - asked to prepare with nothing available");
+#ifdef HAS_DS_PLAYER
+	  if (m_pRendererType == RENDERER_NORMAL)
+		  CLog::Log(LOGERROR, "CRenderManager::PrepareNextRender - asked to prepare with nothing available");
+#else
+	  CLog::Log(LOGERROR, "CRenderManager::PrepareNextRender - asked to prepare with nothing available");
+#endif
     m_presentstep = PRESENT_IDLE;
     m_presentevent.notifyAll();
     return;
