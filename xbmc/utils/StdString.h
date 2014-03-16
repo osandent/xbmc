@@ -2583,9 +2583,9 @@ public:
 
   #endif  // #ifdef _MFC_VER
 
-    if ( !bLoaded )
+    if ( !bLoaded ) {
    //   TRACE(_T("String not loaded 0x%X\n"), ::GetLastError());
-
+	}
     return bLoaded;
   }
 

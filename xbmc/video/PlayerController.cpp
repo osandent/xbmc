@@ -85,6 +85,7 @@ bool CPlayerController::OnAction(const CAction &action)
       }
 
       case ACTION_NEXT_SUBTITLE:
+	{
 #ifdef HAS_DS_PLAYER
 		if(g_advancedSettings.m_videoSubsExpandedSelector)
 		{
@@ -92,7 +93,7 @@ bool CPlayerController::OnAction(const CAction &action)
 			return true;
 		}
 #endif
-		  {
+
         if (g_application.m_pPlayer->GetSubtitleCount() == 0)
           return true;
 
