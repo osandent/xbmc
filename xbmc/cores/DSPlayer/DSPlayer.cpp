@@ -56,6 +56,8 @@
 #include "Application.h"
 #include "GUIUserMessages.h"
 #include "guilib/Key.h"
+#include "settings/MediaSettings.h"
+#include "settings/MediaSourceSettings.h"
 
 using namespace PVR;
 using namespace std;
@@ -429,6 +431,14 @@ void CDSPlayer::Process()
 
 	if(m_PlayerOptions.identify == false) m_callback.OnPlayBackStarted();
 
+	int iLibrary;
+
+	iLibrary = CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream;
+	if (iLibrary < GetSubtitleCount()) g_application.m_pPlayer->SetSubtitle(iLibrary);
+
+    iLibrary = CMediaSettings::Get().GetCurrentVideoSettings().m_AudioStream;
+	if (iLibrary < GetAudioStreamCount()) g_application.m_pPlayer->SetAudioStream(iLibrary);
+	 
 	while (!m_bStop && PlayerState != DSPLAYER_CLOSED && PlayerState != DSPLAYER_LOADING)
 		HandleMessages();
 }
