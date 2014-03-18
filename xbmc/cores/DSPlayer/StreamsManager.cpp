@@ -1184,6 +1184,7 @@ void CSubtitleManager::SetSubtitle( int iStream )
 
     if (SUCCEEDED(m_pStreamManager->m_pIAMStreamSelect->Enable(m_subtitleStreams[enableIndex]->IAMStreamSelect_Index, AMSTREAMSELECTENABLE_ENABLE)))
     {
+      m_pManager->SetSubPicProviderToInternal();
       m_subtitleStreams[enableIndex]->flags = AMSTREAMSELECTINFO_ENABLED;
       m_subtitleStreams[enableIndex]->connected = true;
       CLog::Log(LOGDEBUG, "%s Successfully selected subtitle stream", __FUNCTION__);
