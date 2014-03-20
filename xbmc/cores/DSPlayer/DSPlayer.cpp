@@ -58,6 +58,8 @@
 #include "guilib/Key.h"
 #include "settings/MediaSettings.h"
 #include "settings/MediaSourceSettings.h"
+#include "cores/DSPlayer/dsgraph.h"
+#include "settings/MediaSettings.h"
 
 using namespace PVR;
 using namespace std;
@@ -118,6 +120,49 @@ CDSPlayer::~CDSPlayer()
 	CLog::Log(LOGNOTICE, "%s DSPlayer is now closed", __FUNCTION__);
 }
 
+int CDSPlayer::GetSubtitleCount()
+{
+	if (CGraphFilters::Get()->HasSubFilter()) 
+	{
+		IBaseFilter *pBF = CGraphFilters::Get()->Subs.pBF;
+		Com::SmartQIPtr<IAMStreamSelect> pSS;
+		DWORD nCount;
+		if (pSS = pBF) 
+		{
+			if (FAILED(pSS->Count(&nCount))) { nCount = 0; }
+		}
+		return nCount;
+
+	} else {
+		return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitleCount() : 0;
+	}
+}
+
+int CDSPlayer::GetSubtitle()
+{
+	if (CGraphFilters::Get()->HasSubFilter()) 
+	{
+		int i = CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream;
+		if (i >= 0) { return i; } else { return 0; }
+	} else {
+		return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitle() : 0;
+	}
+}
+
+void CDSPlayer::SetSubtitle(int iStream)
+{
+	if (CGraphFilters::Get()->HasSubFilter()) 
+	{
+		IBaseFilter *pBF = CGraphFilters::Get()->Subs.pBF;
+		Com::SmartQIPtr<IAMStreamSelect> pSS;
+		if (pSS = pBF) 
+		{
+			pSS->Enable(iStream, AMSTREAMSELECTENABLE_ENABLE);	
+		}
+	} else {
+		if (CStreamsManager::Get()) CStreamsManager::Get()->SubtitleManager->SetSubtitle(iStream);
+	}
+}
 
 void CDSPlayer::ShowEditionDlg(bool playStart)
 {

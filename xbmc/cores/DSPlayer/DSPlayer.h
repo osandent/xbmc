@@ -151,16 +151,13 @@ public:
 	  return (CStreamsManager::Get()) ? CStreamsManager::Get()->IsMatroskaEditions() : false; 
   }
 
-  virtual int  GetSubtitleCount() { return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitleCount() : 0; }
-  virtual int  GetSubtitle() { return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitle() : 0; }
+  virtual int  GetSubtitleCount();
+  virtual int  GetSubtitle();
   virtual void GetSubtitleName(int iStream, CStdString &strStreamName) {
     if (CStreamsManager::Get())
       CStreamsManager::Get()->SubtitleManager->GetSubtitleName(iStream, strStreamName);
   }
-  virtual void SetSubtitle(int iStream) {
-    if (CStreamsManager::Get())
-      CStreamsManager::Get()->SubtitleManager->SetSubtitle(iStream);
-  }
+  virtual void SetSubtitle(int iStream);
   virtual bool GetSubtitleVisible() { return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitleVisible() : true; }
   virtual void SetSubtitleVisible( bool bVisible ) {
     if (CStreamsManager::Get())

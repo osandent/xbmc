@@ -29,7 +29,7 @@
 CGraphFilters *CGraphFilters::m_pSingleton = NULL;
 
 CGraphFilters::CGraphFilters():
-  m_isDVD(false), m_UsingDXVADecoder(false), m_CurrentRenderer(DIRECTSHOW_RENDERER_UNDEF)
+  m_isDVD(false), m_UsingDXVADecoder(false), m_CurrentRenderer(DIRECTSHOW_RENDERER_UNDEF), m_hsubfilter(false)
 {
 }
 

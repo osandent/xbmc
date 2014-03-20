@@ -139,6 +139,8 @@ public:
   SFilterInfos Video;
   ///Informations about the audio decoder
   SFilterInfos Audio;
+  ///Informations about the video decoder
+  SFilterInfos Subs;
   ///Informations about the audio renderer
   SFilterInfos AudioRenderer;
   ///Informations about the video renderer
@@ -164,12 +166,16 @@ public:
   void SetIsDVD(bool val) {  m_isDVD = val; }
   void SetCurrentRenderer(DIRECTSHOW_RENDERER renderer) { m_CurrentRenderer = renderer; }
 
+  bool HasSubFilter() { return m_hsubfilter;}
+  void SetHasSubFilter(bool b) { m_hsubfilter = b;}
+
 private:
   CGraphFilters();
   ~CGraphFilters();
 
   static CGraphFilters* m_pSingleton;
 
+  bool m_hsubfilter;
   bool m_isDVD;
   bool m_UsingDXVADecoder;
   DIRECTSHOW_RENDERER m_CurrentRenderer;

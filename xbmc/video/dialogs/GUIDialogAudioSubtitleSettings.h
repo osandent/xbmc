@@ -37,6 +37,8 @@ public:
 
 #ifdef HAS_DS_PLAYER
   static void ShowAudioSelector();
+  static void ShowSubsSelectorLibsubs();
+  static void ShowSubsSelectorFilter();
   static void ShowSubsSelector();
 #endif
 

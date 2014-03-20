@@ -48,6 +48,7 @@ public:
     delete m_pSplitter;
     delete m_pAudio;
     delete m_pVideo;
+	delete m_pSubs;
     delete m_pExtras;
     delete m_pAudioRenderer;
     delete m_pShaders;
@@ -97,6 +98,11 @@ public:
     m_pAudio->GetFilters(item, vecCores, dxva);
   }
 
+  void GetSubsFilters(const CFileItem& item, std::vector<CStdString> &vecCores, bool dxva = false)
+  {
+    m_pSubs->GetFilters(item, vecCores, dxva);
+  }
+
   void GetExtraFilters(const CFileItem& item, std::vector<CStdString> &vecCores, bool dxva = false)
   {
     m_pExtras->GetFilters(item, vecCores, dxva);
@@ -117,6 +123,7 @@ private:
   CFilterSelectionRule * m_pSplitter;
   CFilterSelectionRule * m_pVideo;
   CFilterSelectionRule * m_pAudio;
+  CFilterSelectionRule * m_pSubs;
   CFilterSelectionRule * m_pExtras;
   CFilterSelectionRule * m_pAudioRenderer;
   CShadersSelectionRule * m_pShaders;
@@ -161,6 +168,9 @@ private:
 
     // Video rules
     m_pVideo = new CFilterSelectionRule(pRule->FirstChildElement("video"), "video");
+
+    // Subs rules
+    m_pSubs = new CFilterSelectionRule(pRule->FirstChildElement("subs"), "subs");
 
     // Extra rules
     m_pExtras = new CFilterSelectionRule(pRule->FirstChildElement("extra"), "extra");

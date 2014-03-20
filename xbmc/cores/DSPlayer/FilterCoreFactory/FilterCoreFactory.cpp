@@ -191,6 +191,23 @@ HRESULT CFilterCoreFactory::GetVideoFilter( const CFileItem& pFileItem, CStdStri
   return S_OK;
 }
 
+HRESULT CFilterCoreFactory::GetSubsFilter( const CFileItem& pFileItem, CStdString& filter, bool dxva /*= false*/ )
+{
+  filter = "";
+  CGlobalFilterSelectionRule * pRule = GetGlobalFilterSelectionRule(pFileItem);
+  if (! pRule)
+    return E_FAIL;
+
+  std::vector<CStdString> foo;
+  pRule->GetSubsFilters(pFileItem, foo, dxva);
+
+  if (foo.empty())
+    return E_FAIL; //Todo: Error message
+
+  filter = foo[0];
+  return S_OK;
+}
+
 HRESULT CFilterCoreFactory::GetExtraFilters( const CFileItem& pFileItem, std::vector<CStdString>& filters, bool dxva /*= false*/ )
 {
   filters.clear();

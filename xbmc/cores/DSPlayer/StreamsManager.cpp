@@ -963,9 +963,14 @@ void CSubtitleManager::Initialize()
   SIZE s; s.cx = 0; s.cy = 0;
   ISubManager *pManager = NULL;
 
+  if (CGraphFilters::Get()->HasSubFilter()) {
+	CLog::Log(LOGNOTICE, "%s disabled libsubs.dll", __FUNCTION__);  
+    return;
+  }
   if (! m_dll.IsLoaded())
     return;
 
+  CLog::Log(LOGNOTICE, "%s enabled libsubs.dll", __FUNCTION__);  
   // Log manager for the DLL
   m_Log.reset(new ILogImpl());
 

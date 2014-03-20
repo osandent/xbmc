@@ -439,6 +439,17 @@ HRESULT CFGLoader::LoadFilterRules(const CFileItem& _pFileItem)
   }
   END_PERFORMANCE_COUNTER("Loading splitter filter");
 
+  START_PERFORMANCE_COUNTER
+  if ( FAILED(CFilterCoreFactory::GetSubsFilter(pFileItem, filter, CGraphFilters::Get()->IsUsingDXVADecoder())))
+  {
+	  CGraphFilters::Get()->SetHasSubFilter(false);
+  } else {
+    if ( FAILED(InsertFilter(filter, CGraphFilters::Get()->Subs)))
+      return E_FAIL;
+    CGraphFilters::Get()->SetHasSubFilter(true);
+    END_PERFORMANCE_COUNTER("Loading subs filter");
+  }
+
   // Init Streams manager, and load streams
   START_PERFORMANCE_COUNTER
   CStreamsManager::Create();
