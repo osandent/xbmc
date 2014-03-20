@@ -861,12 +861,12 @@ void CGUIWindowVideoBase::GetResumeItemOffset(const CFileItem *item, int& starto
   if (!item->IsNFO() && !item->IsPlayList())
   {
 #ifdef HAS_DS_PLAYER
-	  CEdition edition;
-	  CDSPlayerDatabase dspdb;
-	  if (!dspdb.Open())
-		  CLog::Log(LOGERROR, "%s - Cannot open DSPlayer database", __FUNCTION__);
-	  else if (dspdb.GetResumeEdition(item, edition))
-		  strEdition = edition.editionName;
+    CEdition edition;
+    CDSPlayerDatabase dspdb;
+    if (!dspdb.Open())
+      CLog::Log(LOGERROR, "%s - Cannot open DSPlayer database", __FUNCTION__);
+      else if (dspdb.GetResumeEdition(item, edition))
+        strEdition = edition.editionName;
 #endif
     if (item->HasVideoInfoTag() && item->GetVideoInfoTag()->m_resumePoint.IsSet())
     {
@@ -900,10 +900,10 @@ bool CGUIWindowVideoBase::HasResumeItemOffset(const CFileItem *item)
 {
   int startoffset = 0, partNumber = 0;
 #ifdef HAS_DS_PLAYER
-	CStdString editionString;
-	GetResumeItemOffset(item, startoffset, partNumber, editionString);
+  CStdString editionString;
+  GetResumeItemOffset(item, startoffset, partNumber, editionString);
 #else
-	GetResumeItemOffset(item, startoffset, partNumber);
+  GetResumeItemOffset(item, startoffset, partNumber);
 #endif
   return startoffset > 0;
 }
@@ -1051,10 +1051,10 @@ CStdString CGUIWindowVideoBase::GetResumeString(const CFileItem &item)
   CStdString resumeString;
   int startOffset = 0, startPart = 0;
 #ifdef HAS_DS_PLAYER
-	CStdString editionString;
-	GetResumeItemOffset(&item, startOffset, startPart, editionString);
+  CStdString editionString;
+  GetResumeItemOffset(&item, startOffset, startPart, editionString);
 #else
-	GetResumeItemOffset(&item, startOffset, startPart);
+  GetResumeItemOffset(&item, startOffset, startPart);
 #endif
 
 	if (startOffset > 0)
@@ -1066,12 +1066,12 @@ CStdString CGUIWindowVideoBase::GetResumeString(const CFileItem &item)
       resumeString += " (" + partString + ")";
     }
 #ifdef HAS_DS_PLAYER
-	else if(!editionString.IsEmpty())
-	{
-		resumeString += " [";
-		resumeString += editionString;
-		resumeString += "]";
-	}
+    else if(!editionString.IsEmpty())
+    {
+      resumeString += " [";
+      resumeString += editionString;
+      resumeString += "]";
+    }
 #endif
   }
   return resumeString;
@@ -1103,9 +1103,9 @@ bool CGUIWindowVideoBase::ShowPlaySelection(CFileItemPtr& item)
   if (item->m_lStartOffset
 
 #ifdef HAS_DS_PLAYER
-	  || (GetDefaultPlayer(item) != EPC_DVDPLAYER && g_application.m_eForcedNextPlayer != EPC_DVDPLAYER)
+    || (GetDefaultPlayer(item) != EPC_DVDPLAYER && g_application.m_eForcedNextPlayer != EPC_DVDPLAYER)
 #endif
-	  )
+    )
     return true;
 
   CStdString path;
@@ -1349,10 +1349,10 @@ bool CGUIWindowVideoBase::OnPlayStackPart(int iItem)
         int value = CGUIDialogContextMenu::ShowAndGetChoice(choices);
 		if (value == SELECT_ACTION_RESUME){
 #ifdef HAS_DS_PLAYER
-			CStdString editionString;
-			GetResumeItemOffset(parts[selectedFile - 1].get(), stack->m_lStartOffset, stack->m_lStartPartNumber, editionString);
+        CStdString editionString;
+        GetResumeItemOffset(parts[selectedFile - 1].get(), stack->m_lStartOffset, stack->m_lStartPartNumber, editionString);
 #else
-			GetResumeItemOffset(parts[selectedFile - 1].get(), stack->m_lStartOffset, stack->m_lStartPartNumber);
+        GetResumeItemOffset(parts[selectedFile - 1].get(), stack->m_lStartOffset, stack->m_lStartPartNumber);
 #endif
 		}else if (value != SELECT_ACTION_PLAY)
           return false; // if not selected PLAY, then we changed our mind so return
@@ -1404,7 +1404,7 @@ bool CGUIWindowVideoBase::OnContextButton(int itemNumber, CONTEXT_BUTTON button)
 
   case CONTEXT_BUTTON_PLAY_ITEM:
 #ifdef HAS_DS_PLAYER
-	  item->m_lStartOffset = STARTOFFSET_BEGIN;
+    item->m_lStartOffset = STARTOFFSET_BEGIN;
 #endif
     PlayItem(itemNumber);
     return true;
@@ -1635,7 +1635,7 @@ void CGUIWindowVideoBase::PlayMovie(const CFileItem *item)
 {
 #ifdef HAS_DS_PLAYER
   if(LaunchBD((CFileItemPtr&)item))
-	  return;
+    return;
 #endif
   CFileItemPtr movieItem(new CFileItem(*item));
 
@@ -1722,7 +1722,7 @@ void CGUIWindowVideoBase::PlayItem(int iItem)
   const CFileItemPtr pItem = m_vecItems->Get(iItem);
 #ifdef HAS_DS_PLAYER
   if(LaunchBD(pItem))
-	  return;
+    return;
 #endif
   // if its a folder, build a temp playlist
   if (pItem->m_bIsFolder && !pItem->IsPlugin())
@@ -2179,19 +2179,19 @@ void CGUIWindowVideoBase::OnInitWindow()
 #ifdef HAS_DS_PLAYER
 int CGUIWindowVideoBase::GetDefaultPlayer(const CFileItemPtr &item)
 {
-	VECPLAYERCORES vecCores;
-	if (item->IsVideoDb())
-	{
-		CFileItem item2(*item->GetVideoInfoTag());
-		CPlayerCoreFactory::Get().GetPlayers(item2, vecCores);
-	}
-	else
-		CPlayerCoreFactory::Get().GetPlayers(*item, vecCores);
+  VECPLAYERCORES vecCores;
+  if (item->IsVideoDb())
+  {
+    CFileItem item2(*item->GetVideoInfoTag());
+    CPlayerCoreFactory::Get().GetPlayers(item2, vecCores);
+  }
+  else
+    CPlayerCoreFactory::Get().GetPlayers(*item, vecCores);
 
-	if (vecCores.size())
-		return vecCores[0];
+  if (vecCores.size())
+    return vecCores[0];
 
-	return PCID_NONE;
+  return PCID_NONE;
 }
 
 bool CGUIWindowVideoBase::IsLaunchBD(const CFileItemPtr &item)

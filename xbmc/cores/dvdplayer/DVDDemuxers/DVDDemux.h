@@ -157,7 +157,7 @@ public:
     iOrientation = 0;
     iBitsPerPixel = 0;
 #ifdef HAS_DS_PLAYER
-	iCodecTag = 0;
+    iCodecTag = 0;
 #endif
   }
 

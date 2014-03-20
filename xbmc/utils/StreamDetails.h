@@ -35,9 +35,9 @@ public:
     SUBTITLE
 #ifdef HAS_DS_PLAYER
 	,
-	EDITION	= 18,	
-	BD_TITLE,
-	PROGRAMM
+    EDITION	= 18,	
+    BD_TITLE,
+    PROGRAMM
 #endif
   };
 
@@ -101,10 +101,10 @@ public:
 class CStreamDetailEditon : public CStreamDetail
 {
 public:
-	CStreamDetailEditon();
-	virtual void Archive(CArchive& ar);
-	virtual void Serialize(CVariant& value);
-	CStdString m_strName;
+  CStreamDetailEditon();
+  virtual void Archive(CArchive& ar);
+  virtual void Serialize(CVariant& value);
+  CStdString m_strName;
 };
 #endif
 

@@ -445,9 +445,9 @@ public:
   int m_iBadPwdCount;
 #ifdef HAS_DS_PLAYER
   enum ItemType {
-	  ITEM_TYPE_NONE = 0, 
-	  ITEM_TYPE_BD, 
-	  ITEM_TYPE_DVD
+    ITEM_TYPE_NONE = 0, 
+    ITEM_TYPE_BD, 
+    ITEM_TYPE_DVD
   } m_itemType;
 #endif
 

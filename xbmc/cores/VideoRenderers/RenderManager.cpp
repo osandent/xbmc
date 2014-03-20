@@ -320,11 +320,11 @@ void CXBMCRenderManager::Update()
 #ifdef HAS_DS_PLAYER
 void CXBMCRenderManager::NewFrame()
 {
-	{
-	CSingleLock lock(m_presentlock);
-	m_presentstep = PRESENT_READY;
-	}
-	m_presentevent.notifyAll();
+  {
+    CSingleLock lock(m_presentlock);
+    m_presentstep = PRESENT_READY;
+  }
+  m_presentevent.notifyAll();
 }
 #endif
 
@@ -389,10 +389,10 @@ void CXBMCRenderManager::FrameFinish()
 
   if(g_graphicsContext.IsFullScreenVideo())
 #ifdef HAS_DS_PLAYER
-	  if (m_pRendererType == RENDERER_NORMAL)
-		  WaitPresentTime(m.timestamp);
+  if (m_pRendererType == RENDERER_NORMAL)
+    WaitPresentTime(m.timestamp);
 #else
-	  WaitPresentTime(m.timestamp);
+  WaitPresentTime(m.timestamp);
 #endif
 
   { CSingleLock lock(m_presentlock);
@@ -436,7 +436,7 @@ unsigned int CXBMCRenderManager::PreInit()
 #ifdef HAS_DS_PLAYER
   if(m_pRenderer && rendtype != m_pRendererType)
   {
-	  SAFE_DELETE(m_pRenderer);
+    SAFE_DELETE(m_pRenderer);
   }
 #endif
   if (!m_pRenderer)
@@ -1058,10 +1058,10 @@ void CXBMCRenderManager::PrepareNextRender()
   if (m_queued.empty())
   {
 #ifdef HAS_DS_PLAYER
-	  if (m_pRendererType == RENDERER_NORMAL)
-		  CLog::Log(LOGERROR, "CRenderManager::PrepareNextRender - asked to prepare with nothing available");
+  if (m_pRendererType == RENDERER_NORMAL)
+    CLog::Log(LOGERROR, "CRenderManager::PrepareNextRender - asked to prepare with nothing available");
 #else
-	  CLog::Log(LOGERROR, "CRenderManager::PrepareNextRender - asked to prepare with nothing available");
+  CLog::Log(LOGERROR, "CRenderManager::PrepareNextRender - asked to prepare with nothing available");
 #endif
     m_presentstep = PRESENT_IDLE;
     m_presentevent.notifyAll();

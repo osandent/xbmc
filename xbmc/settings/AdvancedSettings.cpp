@@ -1174,12 +1174,12 @@ void CAdvancedSettings::ParseSettingsFile(const CStdString &file)
   pDatabase = pRootElement->FirstChildElement("dsplayerdatabase");
   if (pDatabase)
   {
-	  XMLUtils::GetString(pDatabase, "type", m_databaseDSPlayer.type);
-	  XMLUtils::GetString(pDatabase, "host", m_databaseDSPlayer.host);
-	  XMLUtils::GetString(pDatabase, "port", m_databaseDSPlayer.port);
-	  XMLUtils::GetString(pDatabase, "user", m_databaseDSPlayer.user);
-	  XMLUtils::GetString(pDatabase, "pass", m_databaseDSPlayer.pass);
-	  XMLUtils::GetString(pDatabase, "name", m_databaseDSPlayer.name);
+    XMLUtils::GetString(pDatabase, "type", m_databaseDSPlayer.type);
+    XMLUtils::GetString(pDatabase, "host", m_databaseDSPlayer.host);
+    XMLUtils::GetString(pDatabase, "port", m_databaseDSPlayer.port);
+    XMLUtils::GetString(pDatabase, "user", m_databaseDSPlayer.user);
+    XMLUtils::GetString(pDatabase, "pass", m_databaseDSPlayer.pass);
+    XMLUtils::GetString(pDatabase, "name", m_databaseDSPlayer.name);
   }
 #endif
 

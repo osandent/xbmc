@@ -443,8 +443,8 @@ bool CGUIWindowFullScreen::OnMessage(CGUIMessage& message)
       pDialog = (CGUIDialog *)g_windowManager.GetWindow(WINDOW_DIALOG_SUBTITLES);
       if (pDialog) pDialog->Close(true);
 #ifdef HAS_DS_PLAYER
-	  pDialog = (CGUIDialog *)g_windowManager.GetWindow(WINDOW_DIALOG_SELECT);
-	  if (pDialog) pDialog->Close(true);
+      pDialog = (CGUIDialog *)g_windowManager.GetWindow(WINDOW_DIALOG_SELECT);
+      if (pDialog) pDialog->Close(true);
 #endif
       CGUIWindow::OnMessage(message);
 
@@ -545,8 +545,8 @@ EVENT_RESULT CGUIWindowFullScreen::OnMouseEvent(const CPoint &point, const CMous
   { // some other mouse action has occurred - bring up the OSD
     // if it is not already running
 #ifdef HAS_DS_PLAYER
-	  if (g_application.GetCurrentPlayer() == PCID_DSPLAYER && g_application.m_pPlayer->IsInMenu())
-		  return EVENT_RESULT_HANDLED;
+    if (g_application.GetCurrentPlayer() == PCID_DSPLAYER && g_application.m_pPlayer->IsInMenu())
+      return EVENT_RESULT_HANDLED;
 #endif
     CGUIDialogVideoOSD *pOSD = (CGUIDialogVideoOSD *)g_windowManager.GetWindow(WINDOW_DIALOG_VIDEO_OSD);
     if (pOSD && !pOSD->IsDialogRunning())

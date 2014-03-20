@@ -371,7 +371,7 @@ class CAdvancedSettings : public ISettingCallback, public ISettingsHandler
     DatabaseSettings m_databaseTV;    // advanced tv database setup
     DatabaseSettings m_databaseEpg;   /*!< advanced EPG database setup */
 #ifdef HAS_DS_PLAYER
-	DatabaseSettings m_databaseDSPlayer; // advanced DSPlayer database setup
+    DatabaseSettings m_databaseDSPlayer; // advanced DSPlayer database setup
 #endif
 
     bool m_guiVisualizeDirtyRegions;

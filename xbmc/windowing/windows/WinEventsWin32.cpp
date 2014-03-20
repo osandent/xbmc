@@ -624,14 +624,14 @@ LRESULT CALLBACK CWinEventsWin32::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
       break;
     case WM_MOUSEMOVE:
 #ifdef HAS_DS_PLAYER
-		if (g_application.GetCurrentPlayer() == PCID_DSPLAYER)
-		{
-			if ( g_application.m_pPlayer && g_application.m_pPlayer->IsInMenu())
-			{
-				CDSPlayer::PostMessage( new CDSMsgInt(CDSMsg::PLAYER_DVD_MOUSE_MOVE, lParam), false);
-				return(0);
-			}
-		}
+      if (g_application.GetCurrentPlayer() == PCID_DSPLAYER)
+      {
+        if ( g_application.m_pPlayer && g_application.m_pPlayer->IsInMenu())
+        {
+          CDSPlayer::PostMessage( new CDSMsgInt(CDSMsg::PLAYER_DVD_MOUSE_MOVE, lParam), false);
+          return(0);
+        }
+      }
 #endif
       newEvent.type = XBMC_MOUSEMOTION;
       newEvent.motion.x = GET_X_LPARAM(lParam);
@@ -641,14 +641,14 @@ LRESULT CALLBACK CWinEventsWin32::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
       return(0);
     case WM_LBUTTONDOWN:
 #ifdef HAS_DS_PLAYER
-		if (g_application.GetCurrentPlayer() == PCID_DSPLAYER)
-		{
-			if ( g_application.m_pPlayer && g_application.m_pPlayer->IsInMenu())
-			{
-				CDSPlayer::PostMessage( new CDSMsgInt(CDSMsg::PLAYER_DVD_MOUSE_CLICK, lParam), false);
-				return(0);
-			}
-		}
+      if (g_application.GetCurrentPlayer() == PCID_DSPLAYER)
+      {
+        if ( g_application.m_pPlayer && g_application.m_pPlayer->IsInMenu())
+        {
+          CDSPlayer::PostMessage( new CDSMsgInt(CDSMsg::PLAYER_DVD_MOUSE_CLICK, lParam), false);
+          return(0);
+        }
+      }
 #endif
     case WM_MBUTTONDOWN:
     case WM_RBUTTONDOWN:

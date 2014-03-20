@@ -585,7 +585,7 @@ const infomap listitem_labels[]= {{ "thumb",            LISTITEM_THUMB },
                                   { "dbtype",           LISTITEM_DBTYPE },
                                   { "dbid",             LISTITEM_DBID },
 #ifdef HAS_DS_PLAYER
-								  { "itemtype",         LISTITEM_ITEM_TYPE },
+                                  { "itemtype",         LISTITEM_ITEM_TYPE },
 #endif
 
                                   { "stereoscopicmode", LISTITEM_STEREOSCOPIC_MODE },
@@ -4280,9 +4280,9 @@ void CGUIInfoManager::UpdateFPS()
 #ifdef HAS_DS_PLAYER
 CStdString CGUIInfoManager::GetAudioStreamName(int iStream)
 {
-	SPlayerAudioStreamInfo audio;
-	g_application.m_pPlayer->GetAudioStreamInfo(iStream, audio);
-	return audio.name;
+    SPlayerAudioStreamInfo audio;
+    g_application.m_pPlayer->GetAudioStreamInfo(iStream, audio);
+    return audio.name;
 }
 
 CStdString CGUIInfoManager::GetSubtitleName(int iStream)
@@ -4785,11 +4785,11 @@ CStdString CGUIInfoManager::GetItemLabel(const CFileItem *item, int info, CStdSt
     break;
 #ifdef HAS_DS_PLAYER
   case LISTITEM_ITEM_TYPE:
-	  if(item->m_itemType == CFileItem::ITEM_TYPE_BD)
-		  return "bd";
-	  else if(item->m_itemType == CFileItem::ITEM_TYPE_DVD)
-		  return "dvd";
-		break;
+    if(item->m_itemType == CFileItem::ITEM_TYPE_BD)
+      return "bd";
+    else if(item->m_itemType == CFileItem::ITEM_TYPE_DVD)
+      return "dvd";
+      break;
 #endif
   case LISTITEM_STUDIO:
     if (item->HasVideoInfoTag())

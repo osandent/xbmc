@@ -962,9 +962,9 @@ bool CGUIMediaWindow::OnClick(int iItem)
 
   if (pItem->m_bIsFolder
 #ifdef HAS_DS_PLAYER
-	  && pItem->m_lStartOffset != STARTOFFSET_RESUME
+    && pItem->m_lStartOffset != STARTOFFSET_RESUME
 #endif
-	  )
+      )
   {
     if ( pItem->m_bIsShareOrDrive )
     {

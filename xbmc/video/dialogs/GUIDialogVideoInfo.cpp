@@ -1190,19 +1190,16 @@ bool CGUIDialogVideoInfo::MarkWatched(const CFileItemPtr &item, bool bMark)
       if (bMark)
 	  {
 #ifdef HAS_DS_PLAYER
-			  dspdb.ClearEditionOfFile(pTmpItem->GetPath());
+        dspdb.ClearEditionOfFile(pTmpItem->GetPath());
 #endif
-			  database.ClearBookMarksOfFile(pTmpItem->GetPath(), CBookmark::RESUME);
-		  }
+        database.ClearBookMarksOfFile(pTmpItem->GetPath(), CBookmark::RESUME);
+      }
       database.SetPlayCount(*pTmpItem, bMark ? 1 : 0);
     }
 
   }
-
-    database.Close();
-
+  database.Close();
   return true;
-
 }
 
 bool CGUIDialogVideoInfo::CanDeleteVideoItem(const CFileItemPtr &item)

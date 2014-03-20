@@ -117,10 +117,10 @@ bool CHDDirectory::GetDirectory(const CStdString& strPath1, CFileItemList &items
             FileTimeToLocalFileTime(&wfd.ftLastWriteTime, &localTime);
             pItem->m_dateTime=localTime;
 #ifdef HAS_DS_PLAYER
-			if(XFILE::CFile::Exists(itemPath + "BDMV\\index.bdmv"))
-			{
-				pItem->m_itemType = CFileItem::ITEM_TYPE_BD;
-			}
+            if(XFILE::CFile::Exists(itemPath + "BDMV\\index.bdmv"))
+            {
+              pItem->m_itemType = CFileItem::ITEM_TYPE_BD;
+            }
 #endif
             if (wfd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN)
               pItem->SetProperty("file:hidden", true);

@@ -215,10 +215,10 @@ void CPlayerCoreFactory::GetPlayers( const CFileItem& item, VECPLAYERCORES &vecC
   if (item.IsVideo() || !item.IsAudio())
   {
 #ifdef HAS_DS_PLAYER
-	  bool dsplayer = CSettings::Get().GetBool("dsplayer.defaultvideoplayer");
-	  PLAYERCOREID eVideoDefault = dsplayer ? EPC_DSPLAYER : GetPlayerCore("videodefaultplayer");
+    bool dsplayer = CSettings::Get().GetBool("dsplayer.defaultvideoplayer");
+    PLAYERCOREID eVideoDefault = dsplayer ? EPC_DSPLAYER : GetPlayerCore("videodefaultplayer");
 #else
-	  PLAYERCOREID eVideoDefault = GetPlayerCore("videodefaultplayer");
+    PLAYERCOREID eVideoDefault = GetPlayerCore("videodefaultplayer");
 #endif
     if (eVideoDefault != EPC_NONE)
     {
@@ -352,9 +352,9 @@ bool CPlayerCoreFactory::LoadConfiguration(const std::string &file, bool clear)
 #endif
 
 #ifdef HAS_DS_PLAYER
-	CPlayerCoreConfig* dsplayer = new CPlayerCoreConfig("DSPlayer", EPC_DSPLAYER, NULL);
-	dsplayer->m_bPlaysAudio = dsplayer->m_bPlaysVideo = true;
-	m_vecCoreConfigs.push_back(dsplayer);
+    CPlayerCoreConfig* dsplayer = new CPlayerCoreConfig("DSPlayer", EPC_DSPLAYER, NULL);
+    dsplayer->m_bPlaysAudio = dsplayer->m_bPlaysVideo = true;
+    m_vecCoreConfigs.push_back(dsplayer);
 #endif
 
     for(std::vector<CPlayerSelectionRule *>::iterator it = m_vecCoreSelectionRules.begin(); it != m_vecCoreSelectionRules.end(); ++it)

@@ -191,23 +191,23 @@ void CGUIDialogVideoSettings::CreateSettings()
 #ifdef HAS_DS_PLAYER
   else if ( g_application.GetCurrentPlayer() == PCID_DSPLAYER )
   {
-	  vector<pair<int, int> > entries;
-	  entries.push_back(make_pair(DS_SCALINGMETHOD_NEAREST_NEIGHBOR  , 55005));
-	  entries.push_back(make_pair(DS_SCALINGMETHOD_BILINEAR          , 55006));
-	  entries.push_back(make_pair(DS_SCALINGMETHOD_BILINEAR_2        , 55007));
-	  entries.push_back(make_pair(DS_SCALINGMETHOD_BILINEAR_2_60     , 55008));
-	  entries.push_back(make_pair(DS_SCALINGMETHOD_BILINEAR_2_75     , 55009));
-	  entries.push_back(make_pair(DS_SCALINGMETHOD_BILINEAR_2_100    , 55010));
+    vector<pair<int, int> > entries;
+    entries.push_back(make_pair(DS_SCALINGMETHOD_NEAREST_NEIGHBOR  , 55005));
+    entries.push_back(make_pair(DS_SCALINGMETHOD_BILINEAR          , 55006));
+    entries.push_back(make_pair(DS_SCALINGMETHOD_BILINEAR_2        , 55007));
+    entries.push_back(make_pair(DS_SCALINGMETHOD_BILINEAR_2_60     , 55008));
+    entries.push_back(make_pair(DS_SCALINGMETHOD_BILINEAR_2_75     , 55009));
+    entries.push_back(make_pair(DS_SCALINGMETHOD_BILINEAR_2_100    , 55010));
 
-	  m_scalingMethod = CMediaSettings::Get().GetCurrentVideoSettings().GetDSPlayerScalingMethod();
-	  AddSpin(VIDEO_SETTINGS_SCALINGMETHOD, 16300, &m_scalingMethod, entries);
+    m_scalingMethod = CMediaSettings::Get().GetCurrentVideoSettings().GetDSPlayerScalingMethod();
+    AddSpin(VIDEO_SETTINGS_SCALINGMETHOD, 16300, &m_scalingMethod, entries);
 
-	  entries.clear();
-	  entries.push_back(make_pair(DS_STATS_NONE, 55011));
-	  entries.push_back(make_pair(DS_STATS_1, 55012));
-	  entries.push_back(make_pair(DS_STATS_2, 55013));
-	  entries.push_back(make_pair(DS_STATS_3, 55014));
-	  AddSpin(VIDEO_SETTINGS_DS_STATS, 55015, (int *) &g_dsSettings.pRendererSettings->displayStats, entries);
+    entries.clear();
+    entries.push_back(make_pair(DS_STATS_NONE, 55011));
+    entries.push_back(make_pair(DS_STATS_1, 55012));
+    entries.push_back(make_pair(DS_STATS_2, 55013));
+    entries.push_back(make_pair(DS_STATS_3, 55014));
+    AddSpin(VIDEO_SETTINGS_DS_STATS, 55015, (int *) &g_dsSettings.pRendererSettings->displayStats, entries);
   }
 #endif
   if (g_renderManager.Supports(RENDERFEATURE_CROP))
@@ -236,29 +236,29 @@ void CGUIDialogVideoSettings::CreateSettings()
 #ifdef HAS_DS_PLAYER
   if (g_application.GetCurrentPlayer() == PCID_DSPLAYER)
   {
-	  SettingInfo setting;
-	  setting.type = SettingInfo::BUTTON;
-	  setting.id = VIDEO_SETTINGS_DS_FILTERS;
+    SettingInfo setting;
+    setting.type = SettingInfo::BUTTON;
+    setting.id = VIDEO_SETTINGS_DS_FILTERS;
 
-	  BeginEnumFilters(g_dsGraph->pFilterGraph, pEF, pBF)
-	  {
-		  if ((pBF == CGraphFilters::Get()->AudioRenderer.pBF && CGraphFilters::Get()->AudioRenderer.guid != CLSID_ReClock) || pBF == CGraphFilters::Get()->VideoRenderer.pBF )
-			  continue;
+    BeginEnumFilters(g_dsGraph->pFilterGraph, pEF, pBF)
+    {
+      if ((pBF == CGraphFilters::Get()->AudioRenderer.pBF && CGraphFilters::Get()->AudioRenderer.guid != CLSID_ReClock) || pBF == CGraphFilters::Get()->VideoRenderer.pBF )
+        continue;
 
-		  Com::SmartQIPtr<ISpecifyPropertyPages> pProp = pBF;
-		  CAUUID pPages;
-		  if ( pProp )
-		  {
-			  pProp->GetPages(&pPages);
-			  if (pPages.cElems > 0)
-			  {
-				  g_charsetConverter.wToUTF8(GetFilterName(pBF), setting.name);
-				  m_settings.push_back(setting);
-			  }
-			  CoTaskMemFree(pPages.pElems);
-		  } 
-	  }
-	  EndEnumFilters
+      Com::SmartQIPtr<ISpecifyPropertyPages> pProp = pBF;
+      CAUUID pPages;
+      if ( pProp )
+      {
+        pProp->GetPages(&pPages);
+        if (pPages.cElems > 0)
+        {
+          g_charsetConverter.wToUTF8(GetFilterName(pBF), setting.name);
+          m_settings.push_back(setting);
+        }
+        CoTaskMemFree(pPages.pElems);
+      } 
+    }
+    EndEnumFilters
   }
 #endif 
  if (g_renderManager.Supports(RENDERFEATURE_NOISE))
@@ -308,8 +308,8 @@ void CGUIDialogVideoSettings::OnSettingChanged(SettingInfo &setting)
 #ifdef HAS_DS_PLAYER
   else if (setting.id == VIDEO_SETTINGS_SCALINGMETHOD)
   {
-	  if (g_application.GetCurrentPlayer() == PCID_DSPLAYER)
-		  CMediaSettings::Get().GetCurrentVideoSettings().SetDSPlayerScalingMethod((EDSSCALINGMETHOD) m_scalingMethod);
+    if (g_application.GetCurrentPlayer() == PCID_DSPLAYER)
+      CMediaSettings::Get().GetCurrentVideoSettings().SetDSPlayerScalingMethod((EDSSCALINGMETHOD) m_scalingMethod);
   }
 #endif
   else
@@ -344,15 +344,15 @@ void CGUIDialogVideoSettings::OnSettingChanged(SettingInfo &setting)
 #ifdef HAS_DS_PLAYER
   else if (setting.id  == VIDEO_SETTINGS_DS_FILTERS)
   {
-	  IBaseFilter *pBF = NULL;
-	  CStdStringW strNameW;
-	  g_charsetConverter.utf8ToW(setting.name, strNameW);
-	  if(SUCCEEDED(g_dsGraph->pFilterGraph->FindFilterByName(strNameW, &pBF)))
-	  {
-		  //Showing the property page for this filter
-		  m_pDSPropertyPage = new CDSPropertyPage(pBF);
-		  m_pDSPropertyPage->Initialize();
-	  }
+    IBaseFilter *pBF = NULL;
+    CStdStringW strNameW;
+    g_charsetConverter.utf8ToW(setting.name, strNameW);
+    if(SUCCEEDED(g_dsGraph->pFilterGraph->FindFilterByName(strNameW, &pBF)))
+    {
+    //Showing the property page for this filter
+      m_pDSPropertyPage = new CDSPropertyPage(pBF);
+      m_pDSPropertyPage->Initialize();
+    }
   }
 #endif
   else if (setting.id == VIDEO_SETTINGS_DEINTERLACEMODE)

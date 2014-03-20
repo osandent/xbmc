@@ -39,8 +39,8 @@ protected:
 
 #ifdef HAS_DS_PLAYER
 private:
-	CDSPropertyPage* m_pDSPropertyPage;
-	int m_scalingMethod;
+  CDSPropertyPage* m_pDSPropertyPage;
+  int m_scalingMethod;
 #endif
 };
 

@@ -108,7 +108,7 @@ public:
       case EPC_UPNPPLAYER: pPlayer = new UPNP::CUPnPPlayer(callback, m_id.c_str()); break;
 #endif
 #ifdef HAS_DS_PLAYER
-	  case EPC_DSPLAYER: pPlayer = new CDSPlayer(callback); break;
+      case EPC_DSPLAYER: pPlayer = new CDSPlayer(callback); break;
 #endif
       default: return NULL;
     }

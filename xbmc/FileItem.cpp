@@ -615,7 +615,7 @@ void CFileItem::Archive(CArchive& ar)
     ar << m_strLockCode;
     ar << m_iBadPwdCount;
 #ifdef HAS_DS_PLAYER
-	ar << m_itemType;
+    ar << m_itemType;
 #endif
 
     ar << m_bCanQueue;
@@ -667,8 +667,8 @@ void CFileItem::Archive(CArchive& ar)
     ar >> m_strLockCode;
     ar >> m_iBadPwdCount;
 #ifdef HAS_DS_PLAYER
-	ar >> temp;
-	m_itemType = (ItemType)temp;
+    ar >> temp;
+    m_itemType = (ItemType)temp;
 #endif
 
     ar >> m_bCanQueue;
@@ -1537,7 +1537,7 @@ void CFileItem::SetFromVideoInfoTag(const CVideoInfoTag &video)
 #ifdef HAS_DS_PLAYER
   if(IsBDFile())
   {
-	  m_itemType = CFileItem::ITEM_TYPE_BD;
+    m_itemType = CFileItem::ITEM_TYPE_BD;
   }
 #endif
   *GetVideoInfoTag() = video;

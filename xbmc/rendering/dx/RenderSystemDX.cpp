@@ -295,8 +295,8 @@ void CRenderSystemDX::BuildPresentParameters()
   m_D3DPP.BackBufferHeight   = m_nBackBufferHeight;
   m_D3DPP.Flags              = D3DPRESENTFLAG_VIDEO;
 #ifdef HAS_DS_PLAYER
-	m_D3DPP.SwapEffect = (m_useWindowedDX) ? D3DSWAPEFFECT_COPY : D3DSWAPEFFECT_DISCARD;
-	m_D3DPP.PresentationInterval = (m_bVSync || g_dsSettings.pRendererSettings->vSync) ? D3DPRESENT_INTERVAL_ONE : D3DPRESENT_INTERVAL_IMMEDIATE;
+  m_D3DPP.SwapEffect = (m_useWindowedDX) ? D3DSWAPEFFECT_COPY : D3DSWAPEFFECT_DISCARD;
+  m_D3DPP.PresentationInterval = (m_bVSync || g_dsSettings.pRendererSettings->vSync) ? D3DPRESENT_INTERVAL_ONE : D3DPRESENT_INTERVAL_IMMEDIATE;
 #else
 	m_D3DPP.PresentationInterval = (m_bVSync) ? D3DPRESENT_INTERVAL_ONE : D3DPRESENT_INTERVAL_IMMEDIATE;
 #endif
@@ -365,17 +365,17 @@ void CRenderSystemDX::OnDeviceLost()
   SAFE_RELEASE(m_stateBlock);
 
 #ifdef HAS_DS_PLAYER
-	if (m_needNewDevice || (!m_useD3D9Ex && IS_DSPLAYER))
+  if (m_needNewDevice || (!m_useD3D9Ex && IS_DSPLAYER))
 #else
-	if (m_needNewDevice)
+  if (m_needNewDevice)
 #endif
-		DeleteDevice();
-	else
-	{
-		// just resetting the device
-		for (vector<ID3DResource *>::iterator i = m_resources.begin(); i != m_resources.end(); i++)
-			(*i)->OnLostDevice();
-	}
+    DeleteDevice();
+  else
+  {
+    // just resetting the device
+    for (vector<ID3DResource *>::iterator i = m_resources.begin(); i != m_resources.end(); i++)
+    (*i)->OnLostDevice();
+  }
 }
 
 
@@ -491,7 +491,7 @@ bool CRenderSystemDX::CreateDevice()
 #ifdef HAS_DS_PLAYER
   // SetDialogBoxMode is not supported for D3DSWAPEFFECT_FLIPEX swap effect
   if (!m_useD3D9Ex && g_dsSettings.pRendererSettings->fullscreenGUISupport && m_bFullScreenDevice)
-	  hr = m_pD3DDevice->SetDialogBoxMode(TRUE); //To be able to show a com dialog over a fullscreen video playing we need this
+    hr = m_pD3DDevice->SetDialogBoxMode(TRUE); //To be able to show a com dialog over a fullscreen video playing we need this
 #endif
 
   if(m_pD3D->GetAdapterIdentifier(m_adapter, 0, &m_AIdentifier) == D3D_OK)
@@ -647,7 +647,7 @@ bool CRenderSystemDX::PresentRenderImpl(const CDirtyRegionList &dirty)
 #ifdef HAS_DS_PLAYER
   if ( g_application.GetCurrentPlayer() == PCID_DSPLAYER )
   {
-	  g_renderManager.OnAfterPresent(); // We need to do some stuff after Present
+    g_renderManager.OnAfterPresent(); // We need to do some stuff after Present
   }
 #endif
 

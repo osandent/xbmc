@@ -97,20 +97,20 @@ public:
 #ifdef HAS_DS_PLAYER
   inline void RegisterCallback(IPaintCallback *callback)
   {
-	  CSharedLock lock(m_sharedSection);
-	  if (m_pRenderer)
-		  m_pRenderer->RegisterCallback(callback);
+    CSharedLock lock(m_sharedSection);
+    if (m_pRenderer)
+      m_pRenderer->RegisterCallback(callback);
   }
   inline void UnregisterCallback()
   {
-	  CSharedLock lock(m_sharedSection);
-	  if (m_pRenderer)
-		  m_pRenderer->UnregisterCallback();
+    CSharedLock lock(m_sharedSection);
+    if (m_pRenderer)
+      m_pRenderer->UnregisterCallback();
   }
   inline void OnAfterPresent()
   {
-	  if (m_pRenderer)
-		  m_pRenderer->OnAfterPresent();
+    if (m_pRenderer)
+      m_pRenderer->OnAfterPresent();
   }
 #endif
 

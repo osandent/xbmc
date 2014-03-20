@@ -141,10 +141,10 @@ bool CWINSMBDirectory::GetDirectory(const CStdString& strPath1, CFileItemList &i
             FileTimeToLocalFileTime(&wfd.ftLastWriteTime, &localTime);
             pItem->m_dateTime=localTime;
 #ifdef HAS_DS_PLAYER
-			if(XFILE::CFile::Exists(path + "BDMV\\index.bdmv", false))
-			{
-				pItem->m_itemType = CFileItem::ITEM_TYPE_BD;
-			}
+            if(XFILE::CFile::Exists(path + "BDMV\\index.bdmv", false))
+            {
+              pItem->m_itemType = CFileItem::ITEM_TYPE_BD;
+            }
 #endif
             if (wfd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN)
               pItem->SetProperty("file:hidden", true);

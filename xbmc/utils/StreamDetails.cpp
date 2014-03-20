@@ -169,19 +169,19 @@ CStreamDetailEditon::CStreamDetailEditon():CStreamDetail(CStreamDetail::EDITION)
 }
 void CStreamDetailEditon::Archive(CArchive& ar)
 {
-	CStreamDetail::Archive(ar);
-	if (ar.IsStoring())
-	{
-		ar << m_strName;
-	}
-	else
-	{
-		ar >> m_strName;
-	}
+  CStreamDetail::Archive(ar);
+  if (ar.IsStoring())
+  {
+    ar << m_strName;
+  }
+  else
+  {
+    ar >> m_strName;
+  }
 }
 void CStreamDetailEditon::Serialize(CVariant& value)
 {
-	value["name"] = m_strName;
+  value["name"] = m_strName;
 }
 #endif
 
@@ -381,16 +381,16 @@ CStdString CStreamDetails::GetVideoCodec(int idx) const
 #ifdef HAS_DS_PLAYER
 CStdString CStreamDetails::GetVideoFourcc(int idx) const
 {
-	CStreamDetailVideo *item = (CStreamDetailVideo *)GetNthStream(CStreamDetail::VIDEO, idx);
-	if (item)
-	{
-		CStdString fourcc = "";
-		int iFourcc = item->m_iFourcc;
-		fourcc.Format("%c%c%c%c", iFourcc >> 24 & 0xff, iFourcc >> 16 & 0xff, iFourcc >> 8 & 0xff, iFourcc & 0xff);
-		return fourcc;
-	}
-	else
-		return "";
+  CStreamDetailVideo *item = (CStreamDetailVideo *)GetNthStream(CStreamDetail::VIDEO, idx);
+  if (item)
+  {
+    CStdString fourcc = "";
+    int iFourcc = item->m_iFourcc;
+    fourcc.Format("%c%c%c%c", iFourcc >> 24 & 0xff, iFourcc >> 16 & 0xff, iFourcc >> 8 & 0xff, iFourcc & 0xff);
+    return fourcc;
+  }
+  else
+    return "";
 }
 #endif
 
