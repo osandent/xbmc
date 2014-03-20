@@ -79,7 +79,13 @@
       <guid>{18C16B08-6497-420E-AD14-22D21C2CEAB7}</guid>
       <alwaysload>1</alwaysload>
     </filter>
-  
+    
+    <!-- Subs filters -->
+    <filter name="xyvsfilter" type="subs">
+      <guid>{9852A670-F845-491B-9BE6-EBD841B8A613}</guid>
+      <osdname>XyVSFilter Auto</osdname>
+    </filter>
+    
     <!-- Extra filters -->
     <filter name="dcgraphiceq" type="extra">
       <path>DCGraphicEQ.ax</path>
