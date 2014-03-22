@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug (DirectX)|Win32">
@@ -1048,6 +1048,7 @@
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\DX9AllocatorPresenter.h" />
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\EVRAllocatorPresenter.h" />
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\ffdshow_constants.h" />
+    <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\IDirectVobSub.h" />
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\IffDecoder.h" />
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\IffdshowBase.h" />
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\IffdshowDec.h" />

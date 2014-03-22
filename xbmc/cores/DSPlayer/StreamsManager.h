@@ -46,10 +46,10 @@
 #include "Subtitles/ILogImpl.h"
 
 #include "utils/StreamDetails.h"
+#include "Filters/IDirectVobSub.h"
 
 #define XYVSFILTER_SUB_EXTERNAL 6590018
 #define XYVSFILTER_SUB_INTERNAL 6590016
-#define XYVSFILTER_SUB_SHOWHIDE 6590025
 
 [uuid("5711A92E-913E-45A5-9714-8481887644E3")]
 interface IBdStreamSelect : public IUnknown
@@ -105,7 +105,6 @@ enum SubtitleType {
 
 enum SelectSubType {
   ADD_EXTERNAL_SUB,
-  SHOW_HIDE,
   SELECT_INTERNAL_SUB
 };
 
@@ -272,6 +271,7 @@ protected:
   std::vector<CDSStreamDetailSubfilter *> m_subfilterStreams;
   std::vector<CDSStreamDetailEdition *> m_editionStreams;
   bool m_mkveditions;
+  Com::SmartPtr<IDirectVobSub> m_pIDirectVobSub;
   Com::SmartPtr<IAMStreamSelect> m_pIAMStreamSelect;
   Com::SmartPtr<IAMStreamSelect> m_pIAMStreamSelectSub;
   Com::SmartPtr<IFilterGraph2> m_pGraphBuilder;
@@ -281,7 +281,6 @@ protected:
   bool m_bSubfilterVisible;
   bool m_hsubfilter;
   bool m_init;
-  CStdString sShowHide;
 
   CDSStreamDetailVideo m_videoStream;
   CCriticalSection m_lock;

@@ -40,9 +40,6 @@
 #include "Utils/URIUtils.h"
 #include "utils/StringUtils.h"
 
-
-
-
 CDSStreamDetail::CDSStreamDetail()
   : IAMStreamSelect_Index(0), flags(0), pObj(NULL), pUnk(NULL), lcid(0),
     group(0), displayname(""), connected(false)
@@ -88,6 +85,7 @@ CStreamsManager::CStreamsManager(void)
 	, m_dvdStreamLoaded(false)
 	, m_mkveditions(false)
 	,m_pIAMStreamSelectSub(NULL)
+	,m_pIDirectVobSub(NULL)
 {
 	m_readyEvent.Set();
 }
@@ -609,6 +607,7 @@ void CStreamsManager::LoadStreams()
     HRESULT hr = m_pSubs->QueryInterface(__uuidof(m_pIAMStreamSelectSub), (void **) &m_pIAMStreamSelectSub);
     if (SUCCEEDED(hr))
     {
+      m_pSubs->QueryInterface(__uuidof(m_pIDirectVobSub), (void **) &m_pIDirectVobSub);
       CLog::Log(LOGDEBUG, "%s Get IAMStreamSelect interface from %s", __FUNCTION__, subName.c_str());
       SubInterface(ADD_EXTERNAL_SUB);
     }
@@ -686,9 +685,7 @@ void CStreamsManager::SetSubfilterVisible( bool bVisible )
   CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn = bVisible;
   m_bSubfilterVisible = bVisible;
 
-  m_bSubfilterVisible ? sShowHide = "Show Subtitles" : sShowHide = "Hide Subtitles";
-
-  SubInterface(SHOW_HIDE);
+  m_pIDirectVobSub->put_HideSubtitles(!m_bSubfilterVisible);
 } 
 
 void CStreamsManager::SetSubfilter(int iStream)
@@ -708,6 +705,8 @@ void CStreamsManager::SetSubfilter(int iStream)
 
   m_readyEvent.Reset();
   CAutoSetEvent event(&m_readyEvent);
+
+  g_application.m_pPlayer->SetSubtitleVisible(true);
 
   if (m_subfilterStreams[enableIndex]->m_subType == EXTERNAL)
   {
@@ -762,9 +761,6 @@ void CStreamsManager::SubInterface(SelectSubType action)
           m_subfilterStreams.push_back(s.release());
           CLog::Log(LOGNOTICE, "%s Successfully loaded external subtitle name  \"%s\" ", __FUNCTION__, str.c_str());
         }
-      case SHOW_HIDE:
-        if ((group == XYVSFILTER_SUB_SHOWHIDE) && (str == sShowHide))
-          m_pIAMStreamSelectSub->Enable( i, AMSTREAMSELECTENABLE_ENABLE);
       case SELECT_INTERNAL_SUB:
         if (group == XYVSFILTER_SUB_INTERNAL) 
           m_pIAMStreamSelectSub->Enable(i, AMSTREAMSELECTENABLE_ENABLE);

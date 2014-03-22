@@ -506,6 +506,8 @@ void CDSPlayer::Process()
 	else 
 		g_application.m_pPlayer->SetAudioStream(0);
 
+	g_application.m_pPlayer->SetSubtitleVisible(CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn);
+
 	while (!m_bStop && PlayerState != DSPLAYER_CLOSED && PlayerState != DSPLAYER_LOADING)
 		HandleMessages();
 }
