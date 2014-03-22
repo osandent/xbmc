@@ -158,11 +158,8 @@ public:
       CStreamsManager::Get()->SubtitleManager->GetSubtitleName(iStream, strStreamName);
   }
   virtual void SetSubtitle(int iStream);
-  virtual bool GetSubtitleVisible() { return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitleVisible() : true; }
-  virtual void SetSubtitleVisible( bool bVisible ) {
-    if (CStreamsManager::Get())
-      CStreamsManager::Get()->SubtitleManager->SetSubtitleVisible(bVisible);
-  }
+  virtual bool GetSubtitleVisible();
+  virtual void SetSubtitleVisible(bool bVisible);
 
   virtual int AddSubtitle(const CStdString& strSubPath) { return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->AddSubtitle(strSubPath) : -1; };
   virtual void SetSubTitleDelay(float fValue = 0.0f) {

@@ -47,6 +47,10 @@
 
 #include "utils/StreamDetails.h"
 
+#define XYVSFILTER_SUB_EXTERNAL 6590018
+#define XYVSFILTER_SUB_INTERNAL 6590016
+#define XYVSFILTER_SUB_SHOWHIDE 6590025
+
 [uuid("5711A92E-913E-45A5-9714-8481887644E3")]
 interface IBdStreamSelect : public IUnknown
 {
@@ -98,6 +102,13 @@ enum SubtitleType {
   INTERNAL,
   EXTERNAL
 };
+
+enum SelectSubType {
+  ADD_EXTERNAL_SUB,
+  SHOW_HIDE,
+  SELECT_INTERNAL_SUB
+};
+
 class CDSStreamDetailSubtitle: public CDSStreamDetail, public CStreamDetailSubtitle
 {
 public:
@@ -110,6 +121,20 @@ public:
   GUID                  subtype;
   const SubtitleType    m_subType;
 };
+
+class CDSStreamDetailSubfilter: public CDSStreamDetail, public CStreamDetailSubtitle
+{
+public:
+  CDSStreamDetailSubfilter(SubtitleType type);
+
+  CStdString            encoding; ///< Subtitle encoding
+  uint32_t              offset; ///< Not used
+  CStdString            isolang; ///< ISO Code of the subtitle language.
+  CStdStringW           trackname; ///< 
+  GUID                  subtype;
+  const SubtitleType    m_subType;
+};
+
 
 struct CDSStreamDetailEdition: public CDSStreamDetail, public CStreamDetailEditon
 {
@@ -167,6 +192,13 @@ public:
    */
   void SetAudioStream(int iStream);
     /// @return Audio streams count
+
+  int  GetSubfilterCount();
+  int  GetSubfilter();
+  void GetSubfilterName(int iStream, CStdString &strStreamName);
+  bool GetSubfilterVisible();
+  void SetSubfilterVisible( bool bVisible );
+  void SetSubfilter(int iStream);
 
   int  GetEditionsCount();
   int  GetEdition();
@@ -232,15 +264,25 @@ protected:
   void LoadStreamsInternal();
   void LoadIAMStreamSelectStreamsInternal();
 
+  void SubInterface(SelectSubType action);
+  void SelectBestSubtitle();
+  void DisconnectCurrentSubtitlePins();
+
   std::vector<CDSStreamDetailAudio *> m_audioStreams;
-              
+  std::vector<CDSStreamDetailSubfilter *> m_subfilterStreams;
   std::vector<CDSStreamDetailEdition *> m_editionStreams;
   bool m_mkveditions;
   Com::SmartPtr<IAMStreamSelect> m_pIAMStreamSelect;
+  Com::SmartPtr<IAMStreamSelect> m_pIAMStreamSelectSub;
   Com::SmartPtr<IFilterGraph2> m_pGraphBuilder;
   Com::SmartPtr<IBaseFilter> m_pSplitter;
+  Com::SmartPtr<IBaseFilter> m_pSubs;
 
+  bool m_bSubfilterVisible;
+  bool m_hsubfilter;
   bool m_init;
+  CStdString sShowHide;
+
   CDSStreamDetailVideo m_videoStream;
   CCriticalSection m_lock;
   bool m_dvdStreamLoaded;

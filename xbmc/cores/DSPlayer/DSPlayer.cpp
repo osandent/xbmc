@@ -124,15 +124,7 @@ int CDSPlayer::GetSubtitleCount()
 {
 	if (CGraphFilters::Get()->HasSubFilter()) 
 	{
-		IBaseFilter *pBF = CGraphFilters::Get()->Subs.pBF;
-		Com::SmartQIPtr<IAMStreamSelect> pSS;
-		DWORD nCount;
-		if (pSS = pBF) 
-		{
-			if (FAILED(pSS->Count(&nCount))) { nCount = 0; }
-		}
-		return nCount;
-
+		return (CStreamsManager::Get()) ? CStreamsManager::Get()->GetSubfilterCount() : 0;
 	} else {
 		return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitleCount() : 0;
 	}
@@ -142,8 +134,7 @@ int CDSPlayer::GetSubtitle()
 {
 	if (CGraphFilters::Get()->HasSubFilter()) 
 	{
-		int i = CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream;
-		if (i >= 0) { return i; } else { return 0; }
+		return (CStreamsManager::Get()) ? CStreamsManager::Get()->GetSubfilter() : 0;
 	} else {
 		return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitle() : 0;
 	}
@@ -153,16 +144,36 @@ void CDSPlayer::SetSubtitle(int iStream)
 {
 	if (CGraphFilters::Get()->HasSubFilter()) 
 	{
-		IBaseFilter *pBF = CGraphFilters::Get()->Subs.pBF;
-		Com::SmartQIPtr<IAMStreamSelect> pSS;
-		if (pSS = pBF) 
-		{
-			pSS->Enable(iStream, AMSTREAMSELECTENABLE_ENABLE);	
-		}
+		if (CStreamsManager::Get()) CStreamsManager::Get()->SetSubfilter(iStream);
 	} else {
 		if (CStreamsManager::Get()) CStreamsManager::Get()->SubtitleManager->SetSubtitle(iStream);
 	}
 }
+
+bool CDSPlayer::GetSubtitleVisible() 
+{
+	if (CGraphFilters::Get()->HasSubFilter()) 
+	{
+		return (CStreamsManager::Get()) ? CStreamsManager::Get()->GetSubfilterVisible() : true;
+	} else {
+		return (CStreamsManager::Get()) ? CStreamsManager::Get()->SubtitleManager->GetSubtitleVisible() : true;
+	}
+}
+
+void CDSPlayer::SetSubtitleVisible(bool bVisible) 
+{
+	if (CGraphFilters::Get()->HasSubFilter()) 
+	{
+		if (CStreamsManager::Get())
+			CStreamsManager::Get()->SetSubfilterVisible(bVisible);
+	} else {
+		if (CStreamsManager::Get())
+			CStreamsManager::Get()->SubtitleManager->SetSubtitleVisible(bVisible);
+	}
+
+
+}
+
 
 void CDSPlayer::ShowEditionDlg(bool playStart)
 {
@@ -373,7 +384,12 @@ void CDSPlayer::GetAudioStreamInfo(int index, SPlayerAudioStreamInfo &info)
 void CDSPlayer::GetSubtitleStreamInfo(int index, SPlayerSubtitleStreamInfo &info)
 {
 	CStdString strStreamName;
-	if (CStreamsManager::Get()) CStreamsManager::Get()->SubtitleManager->GetSubtitleName(index, strStreamName);
+	if (CGraphFilters::Get()->HasSubFilter()) 
+	{	
+		if (CStreamsManager::Get()) CStreamsManager::Get()->GetSubfilterName(index, strStreamName);
+	} else {
+		if (CStreamsManager::Get()) CStreamsManager::Get()->SubtitleManager->GetSubtitleName(index, strStreamName);
+	}
 	info.language = strStreamName;
 	info.name = strStreamName;
 }
@@ -479,11 +495,17 @@ void CDSPlayer::Process()
 	int iLibrary;
 
 	iLibrary = CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream;
-	if ((iLibrary < GetSubtitleCount()) && !(iLibrary < 0)) g_application.m_pPlayer->SetSubtitle(iLibrary);
+	if ((iLibrary < GetSubtitleCount()) && !(iLibrary < 0)) 
+		g_application.m_pPlayer->SetSubtitle(iLibrary);
+	else 
+		g_application.m_pPlayer->SetSubtitle(0);
 
     iLibrary = CMediaSettings::Get().GetCurrentVideoSettings().m_AudioStream;
-	if ((iLibrary < GetAudioStreamCount()) && !(iLibrary < 0)) g_application.m_pPlayer->SetAudioStream(iLibrary);
-	 
+	if ((iLibrary < GetAudioStreamCount()) && !(iLibrary < 0)) 
+		g_application.m_pPlayer->SetAudioStream(iLibrary);
+	else 
+		g_application.m_pPlayer->SetAudioStream(0);
+
 	while (!m_bStop && PlayerState != DSPLAYER_CLOSED && PlayerState != DSPLAYER_LOADING)
 		HandleMessages();
 }

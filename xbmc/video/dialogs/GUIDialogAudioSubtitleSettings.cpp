@@ -533,11 +533,6 @@ void CGUIDialogAudioSubtitleSettings::ShowAudioSelector()
 
 void CGUIDialogAudioSubtitleSettings::ShowSubsSelector()
 {
-  CGraphFilters::Get()->HasSubFilter() ? ShowSubsSelectorFilter() : ShowSubsSelectorLibsubs();
-}
-
-void CGUIDialogAudioSubtitleSettings::ShowSubsSelectorLibsubs()
-{
   int count = g_application.m_pPlayer->GetSubtitleCount();
 
   if(count <= 0)
@@ -583,42 +578,4 @@ void CGUIDialogAudioSubtitleSettings::ShowSubsSelectorLibsubs()
       g_application.OnAction(CAction(ACTION_SHOW_SUBTITLES));
 }
 
-
-void CGUIDialogAudioSubtitleSettings::ShowSubsSelectorFilter()
-{
-  CGUIDialogSelect *pDlg = (CGUIDialogSelect *) g_windowManager.GetWindow(WINDOW_DIALOG_SELECT);
-  if(!pDlg)
-    return;
-
-  int selected = CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream;
-  IBaseFilter *pBF = CGraphFilters::Get()->Subs.pBF;
-  Com::SmartQIPtr<IAMStreamSelect> pSS;
-  if (pSS = pBF) 
-  {
-    DWORD nCount;
-	DWORD flags;
-    if (FAILED(pSS->Count(&nCount))) { nCount = 0; }
-    for (DWORD i = 0; i < nCount; i++) 
-	{
-      AM_MEDIA_TYPE* pmt = nullptr;
-      WCHAR* pszName = nullptr;
-      if (SUCCEEDED(pSS->Info(i, &pmt, &flags, nullptr, nullptr, &pszName, nullptr, nullptr)) && pmt) 
-      {			
-        CStdString str;
-        g_charsetConverter.wToUTF8(pszName, str);
-        pDlg->Add(str);
-		//if (flags == AMSTREAMSELECTINFO_ENABLED) selected = i;
-      }
-      DeleteMediaType(pmt);
-      CoTaskMemFree(pszName);
-    }
-  }	
-
-  pDlg->SetHeading(462);
-  if (selected >= 0) pDlg->SetSelected(selected);
-  pDlg->DoModal();
-  selected = pDlg->GetSelectedLabel();
-  CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream = selected;
-  pSS->Enable(selected, AMSTREAMSELECTENABLE_ENABLE);
-}
 #endif
