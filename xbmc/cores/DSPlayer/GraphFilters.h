@@ -29,6 +29,7 @@
 
 #include "DSUtil/DSUtil.h"
 #include "DSUtil/SmartPtr.h"
+#include "IPaintCallback.h"
 #include "streams.h"
 #include "utils/CharsetConverter.h"
 #include "system.h"
@@ -109,7 +110,8 @@ enum DIRECTSHOW_RENDERER
 {
     DIRECTSHOW_RENDERER_VMR9 = 1,
     DIRECTSHOW_RENDERER_EVR = 2,
-    DIRECTSHOW_RENDERER_UNDEF = 3
+    DIRECTSHOW_RENDERER_MADVR = 3,
+    DIRECTSHOW_RENDERER_UNDEF = 4
 };
 
 /** @brief Centralize graph filters management
@@ -156,6 +158,8 @@ public:
   /// @return The current renderer type (EVR or VMR9)
   DIRECTSHOW_RENDERER GetCurrentRenderer() { return m_CurrentRenderer; }  
 
+  IPaintCallbackMadvr* GetMadvrCallback() { return m_pMadvr;}
+
   /// @return True if using DXVA, false otherwise
   bool IsUsingDXVADecoder() { return m_UsingDXVADecoder; }
 
@@ -165,6 +169,8 @@ public:
   void SetIsUsingDXVADecoder(bool val) { m_UsingDXVADecoder = val; }
   void SetIsDVD(bool val) {  m_isDVD = val; }
   void SetCurrentRenderer(DIRECTSHOW_RENDERER renderer) { m_CurrentRenderer = renderer; }
+  void SetMadVrCallback(IPaintCallbackMadvr* pMadvr) { m_pMadvr = pMadvr;}
+  bool UsingMadVr();
 
   bool HasSubFilter() { return m_hsubfilter;}
   void SetHasSubFilter(bool b) { m_hsubfilter = b;}
@@ -174,7 +180,7 @@ private:
   ~CGraphFilters();
 
   static CGraphFilters* m_pSingleton;
-
+  IPaintCallbackMadvr* m_pMadvr;
   bool m_hsubfilter;
   bool m_isDVD;
   bool m_UsingDXVADecoder;

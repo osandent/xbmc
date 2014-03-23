@@ -250,6 +250,7 @@
 #endif
 #ifdef HAS_DS_PLAYER
 #include "cores/DSPlayer/GUIDialogShaderList.h"
+#include "cores/DSPlayer/GraphFilters.h" /*MADVR MOD*/
 #endif
 
 /* PVR related include Files */
@@ -2206,6 +2207,25 @@ void CApplication::NewFrame()
 
   m_frameCond.notifyAll();
 }
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+void CApplication::RenderMadVr()
+{
+  //i suppose its a better way to render
+  m_renderMadVr.Set();
+  /*bool rendered = RenderNoPresent();
+  g_infoManager.ResetCache();
+  
+  //should we pass by applicationmessenger?
+  //CApplicationMessenger::Get().re
+  // execute post rendering actions (finalize window closing)
+  g_windowManager.AfterRender();
+
+  unsigned int now = XbmcThreads::SystemClockMillis();
+  if (rendered)
+    m_lastRenderTime = now;
+    */
+}
+#endif
 
 void CApplication::Render()
 {
@@ -2214,6 +2234,16 @@ void CApplication::Render()
     return;
 
   MEASURE_FUNCTION;
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+    
+  bool UsingMadVr = CGraphFilters::Get()->UsingMadVr();
+  if (UsingMadVr)
+  {
+    m_renderMadVr.WaitMSec(1000);
+    return;
+  }
+
+#endif
 
   int vsync_mode = CSettings::Get().GetInt("videoscreen.vsync");
 
@@ -2284,8 +2314,22 @@ void CApplication::Render()
   if (m_bPresentFrame && m_pPlayer->IsPlaying() && !m_pPlayer->IsPaused())
     ResetScreenSaver();
 
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+  /*if ( g_application.GetCurrentPlayer() == PCID_DSPLAYER )
+  {
+    if (CGraphFilters::Get()->GetCurrentRenderer() == DIRECTSHOW_RENDERER_MADVR)
+      if (CGraphFilters::Get()->GetMadvrCallback() != NULL)
+        CGraphFilters::Get()->GetMadvrCallback()->IsReady();
+  }*/
+  if (!UsingMadVr)
+  {
+    if(!g_Windowing.BeginRender())
+      return;
+  }
+#else
   if(!g_Windowing.BeginRender())
     return;
+#endif
 
   g_renderManager.FrameMove();
 
@@ -2312,7 +2356,23 @@ void CApplication::Render()
 
   g_renderManager.FrameFinish();
 
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+  if (!UsingMadVr)
+  {
+    g_Windowing.EndRender();
+  }
+  /*MADVR*/
+  /*if ( g_application.GetCurrentPlayer() == PCID_DSPLAYER )
+  {
+    if (CGraphFilters::Get()->GetCurrentRenderer() == DIRECTSHOW_RENDERER_MADVR)
+      if (CGraphFilters::Get()->GetMadvrCallback() != NULL)
+        CGraphFilters::Get()->GetMadvrCallback()->StartBack();
+  }*/
+  /*MADVR*/
+#else
   g_Windowing.EndRender();
+#endif
+
 
   // execute post rendering actions (finalize window closing)
   g_windowManager.AfterRender();
@@ -2346,11 +2406,21 @@ void CApplication::Render()
       Sleep(singleFrameTime - frameTime);
   }
   m_lastFrameTime = XbmcThreads::SystemClockMillis();
-
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+  /*MADVR*/
+  if ((CGraphFilters::Get()->GetCurrentRenderer() == DIRECTSHOW_RENDERER_MADVR)&&(CGraphFilters::Get()->GetMadvrCallback() != NULL))
+  {
+  }
+  else
+  {
+    if (flip)
+      g_graphicsContext.Flip(dirtyRegions);
+  }
+#else
   if (flip)
     g_graphicsContext.Flip(dirtyRegions);
+#endif
   CTimeUtils::UpdateFrameTime(flip);
-
   g_renderManager.UpdateResolution();
   g_renderManager.ManageCaptures();
 }

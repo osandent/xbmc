@@ -92,10 +92,24 @@ IPlayer* CPlayerCoreFactory::CreatePlayer(const CStdString& strCore, IPlayerCall
 IPlayer* CPlayerCoreFactory::CreatePlayer(const PLAYERCOREID eCore, IPlayerCallback& callback) const
 {
   CSingleLock lock(m_section);
+
+#ifdef HAS_DS_PLAYER /* MADVR MOD */
+
+  for (int i = 0 ; i < m_vecCoreConfigs.size();i++)
+  {
+    if (m_vecCoreConfigs[i]->GetType() == eCore)
+      return m_vecCoreConfigs[i]->CreatePlayer(callback);
+  }
+  return NULL;
+
+#else
+
   if (m_vecCoreConfigs.empty() || eCore-1 > m_vecCoreConfigs.size()-1)
     return NULL;
-
+    
   return m_vecCoreConfigs[eCore-1]->CreatePlayer(callback);
+
+#endif
 }
 
 PLAYERCOREID CPlayerCoreFactory::GetPlayerCore(const CStdString& strCoreName) const
@@ -352,9 +366,13 @@ bool CPlayerCoreFactory::LoadConfiguration(const std::string &file, bool clear)
 #endif
 
 #ifdef HAS_DS_PLAYER
-    CPlayerCoreConfig* dsplayer = new CPlayerCoreConfig("DSPlayer", EPC_DSPLAYER, NULL);
-    dsplayer->m_bPlaysAudio = dsplayer->m_bPlaysVideo = true;
-    m_vecCoreConfigs.push_back(dsplayer);
+  CPlayerCoreConfig* dsplayer = new CPlayerCoreConfig("DSPlayer", EPC_DSPLAYER, NULL);
+  dsplayer->m_bPlaysAudio = dsplayer->m_bPlaysVideo = true;
+  m_vecCoreConfigs.push_back(dsplayer);
+  /*MADVR MOD*/
+  /*added those to fix the problem with the id of the player*/
+  m_vecCoreConfigs.push_back(dsplayer);
+  m_vecCoreConfigs.push_back(dsplayer);
 #endif
 
     for(std::vector<CPlayerSelectionRule *>::iterator it = m_vecCoreSelectionRules.begin(); it != m_vecCoreSelectionRules.end(); ++it)

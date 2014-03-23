@@ -34,7 +34,9 @@
 #include "windowing/WindowingFactory.h"
 #include "utils/Variant.h"
 #include "Key.h"
-
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+#include "GraphFilters.h"
+#endif
 using namespace std;
 
 CGUIWindowManager::CGUIWindowManager(void)
@@ -450,6 +452,21 @@ void CGUIWindowManager::CloseDialogs(bool forceClose) const
 bool CGUIWindowManager::OnAction(const CAction &action) const
 {
   CSingleLock lock(g_graphicsContext);
+
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+  if (CGraphFilters::Get()->UsingMadVr())
+  {
+  /*MADVR TEMPORARY
+  I expect we will not need this when we will render the gui correctly
+  if this part is not there it break before sending the action to the
+  fullscreen window*/
+
+  CGUIWindow* window = GetWindow(GetActiveWindow());
+  if (window)
+    return window->OnAction(action);
+  }
+#endif
+
   unsigned int topMost = m_activeDialogs.size();
   while (topMost)
   {
@@ -549,6 +566,9 @@ void CGUIWindowManager::RenderPass() const
 
 bool CGUIWindowManager::Render()
 {
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+  if (!CGraphFilters::Get()->UsingMadVr())
+#endif
   assert(g_application.IsCurrentThread());
   CSingleLock lock(g_graphicsContext);
 

@@ -137,6 +137,10 @@ public:
   virtual void Preflight();
   virtual bool Create();
   virtual bool Cleanup();
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+  CEvent m_renderMadVr;
+  void RenderMadVr();
+#endif
 
   bool CreateGUI();
   bool InitWindow();

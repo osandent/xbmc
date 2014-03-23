@@ -33,6 +33,7 @@
 
 #include "Filters/VMR9AllocatorPresenter.h"
 #include "Filters/EVRAllocatorPresenter.h"
+#include "Filters/madVRAllocatorPresenter.h"
 #include "windowing/WindowingFactory.h"
 #include "utils/log.h"
 #include "utils/charsetconverter.h"
@@ -363,7 +364,10 @@ CFGFilterFile::CFGFilterFile( TiXmlElement *pFilter )
     }
   }
 
-  m_path = m_filterFound ?  _P(m_path) : GetFilterPath(clsid);
+  CStdString newpath;
+  /*always convert to CStdStringA when needed*/
+  g_charsetConverter.wToUTF8(GetFilterPath(clsid),newpath);
+  m_path = m_filterFound ?  _P(m_path) : newpath;
 
   // Call super constructor
   m_clsid = clsid;
@@ -454,7 +458,8 @@ HRESULT CFGFilterVideoRenderer::Create(IBaseFilter** ppBF)
     CreateAP9(m_clsid, g_hWnd, &pCAP);
   else if (m_clsid == CLSID_EVRAllocatorPresenter)
     CreateEVR(m_clsid, g_hWnd, &pCAP);
-
+  else if (m_clsid == CLSID_madVR)
+    CreateMadVR(m_clsid, g_hWnd, &pCAP);
   if(pCAP == NULL)
   {
     CLog::Log(LOGERROR, "%s Failed to create the allocater presenter (error: %s)", __FUNCTION__, __err.c_str());

@@ -44,6 +44,7 @@
 #include "filters/XBMCFileSource.h"
 #include "filters/VMR9AllocatorPresenter.h"
 #include "filters/EVRAllocatorPresenter.h"
+#include "Filters/madVRAllocatorPresenter.h"
 
 #include "Utils/AudioEnumerator.h"
 #include "DVDFileInfo.h"
@@ -338,16 +339,21 @@ HRESULT CFGLoader::InsertVideoRenderer()
       CGraphFilters::Get()->SetCurrentRenderer(DIRECTSHOW_RENDERER_VMR9);
   }    
 
+    /*TEMP MADVR*/ /* MADVR SETON */
+  CGraphFilters::Get()->SetCurrentRenderer(DIRECTSHOW_RENDERER_MADVR);
+
   // Renderers
   if (CGraphFilters::Get()->GetCurrentRenderer() == DIRECTSHOW_RENDERER_EVR)
   {
     m_pFGF = new CFGFilterVideoRenderer(CLSID_EVRAllocatorPresenter, L"Xbmc EVR");
   }
-  else
+  else if (CGraphFilters::Get()->GetCurrentRenderer() == DIRECTSHOW_RENDERER_VMR9)
   {
     m_pFGF = new CFGFilterVideoRenderer(CLSID_VMR9AllocatorPresenter, L"Xbmc VMR9");
   }
-
+  else if (CGraphFilters::Get()->GetCurrentRenderer() == DIRECTSHOW_RENDERER_MADVR)
+    m_pFGF = new CFGFilterVideoRenderer(CLSID_madVR, L"MADVR");
+  
   
   hr = m_pFGF->Create( &CGraphFilters::Get()->VideoRenderer.pBF);
   if (FAILED(hr))

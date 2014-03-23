@@ -74,6 +74,9 @@ public:
   inline void Reset() { CSingleLock lock(mutex); signaled = false; }
   void Set();
 
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+  bool IsSet() {return signaled;}
+#endif
   /**
    * This will wait up to 'milliSeconds' milliseconds for the Event
    *  to be triggered. The method will return 'true' if the Event

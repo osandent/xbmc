@@ -38,6 +38,7 @@ enum ESettingsType
   FILTERS
 };
 
+struct SFilterInfos;
 class CFGLoader : public CCriticalSection
 {
 public:

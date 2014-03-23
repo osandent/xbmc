@@ -103,9 +103,6 @@
     <Filter Include="settings">
       <UniqueIdentifier>{8cd0e706-bd9f-4e99-afa2-34307239cb3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="storage">
-      <UniqueIdentifier>{2500f45e-2a56-4434-87bd-727050d0d1aa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="utils">
       <UniqueIdentifier>{acd585b0-c319-43f0-9149-b3b5dddf5122}</UniqueIdentifier>
     </Filter>
@@ -156,9 +153,6 @@
     </Filter>
     <Filter Include="rendering\gl">
       <UniqueIdentifier>{c23bb4dd-e0dc-4e0e-aaa5-d66798a0fc34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="storage\windows">
-      <UniqueIdentifier>{04b51f60-cfb4-43fd-8f23-40a7d0ac5c31}</UniqueIdentifier>
     </Filter>
     <Filter Include="video\dialogs">
       <UniqueIdentifier>{0dec7f48-a12d-4afa-b60d-4a2b50ca9975}</UniqueIdentifier>
@@ -346,8 +340,11 @@
     <Filter Include="cores\DSPlayer\Filters\Source">
       <UniqueIdentifier>{c356be07-4c7d-42dc-9a99-2beea6f8dc56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="cores\DSPlayer\iMON">
-      <UniqueIdentifier>{c9cfe4a7-b0c3-4b86-aca2-908c801742b5}</UniqueIdentifier>
+    <Filter Include="settings\storage">
+      <UniqueIdentifier>{2500f45e-2a56-4434-87bd-727050d0d1aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="settings\storage\windows">
+      <UniqueIdentifier>{04b51f60-cfb4-43fd-8f23-40a7d0ac5c31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1460,19 +1457,19 @@
       <Filter>settings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xbmc\storage\AutorunMediaJob.cpp">
-      <Filter>storage</Filter>
+      <Filter>settings\storage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xbmc\storage\cdioSupport.cpp">
-      <Filter>storage</Filter>
+      <Filter>settings\storage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xbmc\storage\IoSupport.cpp">
-      <Filter>storage</Filter>
+      <Filter>settings\storage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xbmc\storage\MediaManager.cpp">
-      <Filter>storage</Filter>
+      <Filter>settings\storage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xbmc\storage\windows\Win32StorageProvider.cpp">
-      <Filter>storage\windows</Filter>
+      <Filter>settings\storage\windows</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xbmc\utils\AlarmClock.cpp">
       <Filter>utils</Filter>
@@ -3249,6 +3246,17 @@
     <ClCompile Include="..\..\xbmc\cores\DSPlayer\DSPlayerDatabase.cpp">
       <Filter>cores\DSPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\xbmc\filesystem\DAVCommon.cpp" />
+    <ClCompile Include="..\..\xbmc\filesystem\DAVFile.cpp" />
+    <ClCompile Include="..\..\xbmc\guilib\cximage.cpp" />
+    <ClCompile Include="..\..\xbmc\guilib\imagefactory.cpp" />
+    <ClCompile Include="..\..\xbmc\network\upnp\UPnPPlayer.cpp" />
+    <ClCompile Include="..\..\xbmc\view\GUIViewControl.cpp" />
+    <ClCompile Include="..\..\xbmc\view\GUIViewState.cpp" />
+    <ClCompile Include="..\..\xbmc\view\ViewDatabase.cpp" />
+    <ClCompile Include="..\..\xbmc\cores\DSPlayer\Filters\madVRAllocatorPresenter.cpp">
+      <Filter>cores\DSPlayer\Filters\Video Renderers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\xbmc\win32\pch.h">
@@ -4580,22 +4588,22 @@
       <Filter>settings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\xbmc\storage\AutorunMediaJob.h">
-      <Filter>storage</Filter>
+      <Filter>settings\storage</Filter>
     </ClInclude>
     <ClInclude Include="..\..\xbmc\storage\cdioSupport.h">
-      <Filter>storage</Filter>
+      <Filter>settings\storage</Filter>
     </ClInclude>
     <ClInclude Include="..\..\xbmc\storage\IoSupport.h">
-      <Filter>storage</Filter>
+      <Filter>settings\storage</Filter>
     </ClInclude>
     <ClInclude Include="..\..\xbmc\storage\IStorageProvider.h">
-      <Filter>storage</Filter>
+      <Filter>settings\storage</Filter>
     </ClInclude>
     <ClInclude Include="..\..\xbmc\storage\MediaManager.h">
-      <Filter>storage</Filter>
+      <Filter>settings\storage</Filter>
     </ClInclude>
     <ClInclude Include="..\..\xbmc\storage\windows\Win32StorageProvider.h">
-      <Filter>storage\windows</Filter>
+      <Filter>settings\storage\windows</Filter>
     </ClInclude>
     <ClInclude Include="..\..\xbmc\utils\AlarmClock.h">
       <Filter>utils</Filter>
@@ -6399,6 +6407,9 @@
     </ClInclude>
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\IDirectVobSub.h">
       <Filter>cores\DSPlayer\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\madVRAllocatorPresenter.h">
+      <Filter>cores\DSPlayer\Filters\Video Renderers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

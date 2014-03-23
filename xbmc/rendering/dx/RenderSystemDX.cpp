@@ -40,6 +40,7 @@
 #include "Util.h"
 #include "win32/WIN32Util.h"
 #include "video/VideoReferenceClock.h"
+#include "cores/DSPlayer/GraphFilters.h" /*MADVR MOD*/
 #if (D3DX_SDK_VERSION >= 42) //aug 2009 sdk and up use dxerr
   #include <Dxerr.h>
 #else
@@ -782,7 +783,29 @@ bool CRenderSystemDX::ClearBuffers(color_t color)
 {
   if (!m_bRenderCreated)
     return false;
+#ifdef HAS_DS_PLAYER /*MADVR MOD*/
+  if ((CGraphFilters::Get()->GetCurrentRenderer() == DIRECTSHOW_RENDERER_MADVR)&&(CGraphFilters::Get()->GetMadvrCallback() != NULL))
+  {
+  } 
+  else
+  {
+    if(m_stereoMode == RENDER_STEREO_MODE_ANAGLYPH_RED_CYAN
+    || m_stereoMode == RENDER_STEREO_MODE_ANAGLYPH_GREEN_MAGENTA)
+    {
+      // if stereo anaglyph, data was cleared when left view was rendererd
+      if(m_stereoView == RENDER_STEREO_VIEW_RIGHT)
+        return true;
+    }
 
+    return SUCCEEDED(m_pD3DDevice->Clear(
+      0,
+      NULL,
+      D3DCLEAR_TARGET,
+      color,
+      1.0,
+      0 ) );
+  } 
+#else
   if(m_stereoMode == RENDER_STEREO_MODE_ANAGLYPH_RED_CYAN
   || m_stereoMode == RENDER_STEREO_MODE_ANAGLYPH_GREEN_MAGENTA)
   {
@@ -798,6 +821,7 @@ bool CRenderSystemDX::ClearBuffers(color_t color)
     color,
     1.0,
     0 ) );
+#endif
 
   return true;
 }
