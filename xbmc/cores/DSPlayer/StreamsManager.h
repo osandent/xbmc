@@ -198,6 +198,7 @@ public:
   bool GetSubfilterVisible();
   void SetSubfilterVisible( bool bVisible );
   void SetSubfilter(int iStream);
+  void SelectBestSubtitle();
 
   int  GetEditionsCount();
   int  GetEdition();
@@ -264,7 +265,6 @@ protected:
   void LoadIAMStreamSelectStreamsInternal();
 
   void SubInterface(SelectSubType action);
-  void SelectBestSubtitle();
   void DisconnectCurrentSubtitlePins();
 
   std::vector<CDSStreamDetailAudio *> m_audioStreams;
@@ -281,6 +281,7 @@ protected:
   bool m_bSubfilterVisible;
   bool m_hsubfilter;
   bool m_init;
+  bool m_bIsXYVSFilter;
 
   CDSStreamDetailVideo m_videoStream;
   CCriticalSection m_lock;

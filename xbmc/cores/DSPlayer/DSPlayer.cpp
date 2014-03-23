@@ -492,21 +492,20 @@ void CDSPlayer::Process()
 
 	if(m_PlayerOptions.identify == false) m_callback.OnPlayBackStarted();
 
-	int iLibrary;
+  if (CGraphFilters::Get()->HasSubFilter()) 
+    if (CStreamsManager::Get()) CStreamsManager::Get()->SelectBestSubtitle();
+  else
+    if (CStreamsManager::Get()) CStreamsManager::Get()->SubtitleManager->SelectBestSubtitle(); 
 
-	iLibrary = CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream;
-	if ((iLibrary < GetSubtitleCount()) && !(iLibrary < 0)) 
-		g_application.m_pPlayer->SetSubtitle(iLibrary);
-	else 
-		g_application.m_pPlayer->SetSubtitle(0);
+  int iLibrary;
+  iLibrary = CMediaSettings::Get().GetCurrentVideoSettings().m_AudioStream;
 
-    iLibrary = CMediaSettings::Get().GetCurrentVideoSettings().m_AudioStream;
 	if ((iLibrary < GetAudioStreamCount()) && !(iLibrary < 0)) 
 		g_application.m_pPlayer->SetAudioStream(iLibrary);
 	else 
 		g_application.m_pPlayer->SetAudioStream(0);
 
-	g_application.m_pPlayer->SetSubtitleVisible(CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn);
+	
 
 	while (!m_bStop && PlayerState != DSPLAYER_CLOSED && PlayerState != DSPLAYER_LOADING)
 		HandleMessages();

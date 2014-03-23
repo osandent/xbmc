@@ -607,19 +607,19 @@ void CStreamsManager::LoadStreams()
     HRESULT hr = m_pSubs->QueryInterface(__uuidof(m_pIAMStreamSelectSub), (void **) &m_pIAMStreamSelectSub);
     if (SUCCEEDED(hr))
     {
-      m_pSubs->QueryInterface(__uuidof(m_pIDirectVobSub), (void **) &m_pIDirectVobSub);
       CLog::Log(LOGDEBUG, "%s Get IAMStreamSelect interface from %s", __FUNCTION__, subName.c_str());
+      
+      HRESULT hr = m_pSubs->QueryInterface(__uuidof(m_pIDirectVobSub), (void **) &m_pIDirectVobSub);
+      if (SUCCEEDED(hr))
+        m_bIsXYVSFilter = true;
       SubInterface(ADD_EXTERNAL_SUB);
     }
-    SelectBestSubtitle();
   }
 
   SubtitleManager->Initialize();
   if (! SubtitleManager->Ready())
   {
     SubtitleManager->Unload();
-    SubtitleManager->SetSubtitleVisible(CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn);
-
     return;
   }
   
@@ -685,12 +685,15 @@ void CStreamsManager::SetSubfilterVisible( bool bVisible )
   CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn = bVisible;
   m_bSubfilterVisible = bVisible;
 
+  if (!m_bIsXYVSFilter)
+    return;
+
   m_pIDirectVobSub->put_HideSubtitles(!m_bSubfilterVisible);
 } 
 
 void CStreamsManager::SetSubfilter(int iStream)
 {
-  if (! m_init || m_subfilterStreams.size() == 0)
+  if (! m_init || m_subfilterStreams.size() == 0 || !m_bSubfilterVisible)
     return;
 
   CSingleLock lock(m_lock);
@@ -706,7 +709,7 @@ void CStreamsManager::SetSubfilter(int iStream)
   m_readyEvent.Reset();
   CAutoSetEvent event(&m_readyEvent);
 
-  g_application.m_pPlayer->SetSubtitleVisible(true);
+  CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream = enableIndex;
 
   if (m_subfilterStreams[enableIndex]->m_subType == EXTERNAL)
   {
@@ -740,6 +743,9 @@ void CStreamsManager::SetSubfilter(int iStream)
 
 void CStreamsManager::SubInterface(SelectSubType action)
 {
+  if (!m_bIsXYVSFilter)
+    return;
+
   DWORD nCount;
   DWORD group;
   if (FAILED(m_pIAMStreamSelectSub->Count(&nCount))) { nCount = 0; }
@@ -772,15 +778,42 @@ void CStreamsManager::SubInterface(SelectSubType action)
 
 void CStreamsManager::SelectBestSubtitle()
 {
-  //select best subtitle
-  int iIndex = -1;
-  if ( (iIndex = GetSubfilter()) == -1 )
-  SetSubfilter(0);
-  else
-  {
-    if (! m_subfilterStreams[iIndex]->connected)
-    SetSubfilter(iIndex);
+  int select = 0;
+	int iLibrary;
+
+  // set previuos selected stream
+	iLibrary = CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream;
+	if ((iLibrary < g_application.m_pPlayer->GetSubtitleCount()) && !(iLibrary < 0)) 
+		select = iLibrary;
+
+  // set first external sub
+  else if (m_subfilterStreams.size() != 0)
+  {  
+    int i = 0;
+    for (std::vector<CDSStreamDetailSubfilter *>::const_iterator it = m_subfilterStreams.begin();
+      it != m_subfilterStreams.end(); ++it, i++)
+    {
+      if ( (*it)->m_subType & EXTERNAL)
+      {  
+        select = i;
+        break;
+      }
+    }
   }
+  // set first internal subtitle
+  else 
+  {
+    int iIndex = -1;
+    if ( (iIndex = GetSubfilter()) == -1 )
+      select = 0;
+    else
+    {
+      if (! m_subfilterStreams[iIndex]->connected)
+      select = iIndex;
+    }
+  }
+  SetSubfilter(select);
+  SetSubfilterVisible(CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn);
 }
 
 void CStreamsManager::DisconnectCurrentSubtitlePins()
@@ -808,7 +841,9 @@ bool CStreamsManager::InitManager()
 
   m_hsubfilter = CGraphFilters::Get()->HasSubFilter();
   m_init = true;
-
+  m_bIsXYVSFilter = false;
+  m_bSubfilterVisible = true;
+  
   return true;
 }
 
@@ -1153,6 +1188,7 @@ void CSubtitleManager::Initialize()
 {
   // Initialize subtitles
   // 1. Create Subtitle Manager
+  m_bSubtitlesVisible = true;
 
   SIZE s; s.cx = 0; s.cy = 0;
   ISubManager *pManager = NULL;
@@ -1331,6 +1367,9 @@ void CSubtitleManager::GetSubtitleName( int iStream, CStdString &strStreamName )
 
 void CSubtitleManager::SetSubtitle( int iStream )
 {
+  if (m_subtitleStreams.size() == 0 || !m_bSubtitlesVisible)
+    return;
+  
   if (CGraphFilters::Get()->IsDVD())
     return; // currently not implemented
 
@@ -1345,12 +1384,6 @@ void CSubtitleManager::SetSubtitle( int iStream )
 
   long disableIndex = GetSubtitle(), enableIndex = iStream;
 
-  if (m_bSubtitlesVisible && m_subtitleStreams[enableIndex]->connected)
-  {
-    // The new subtitle stream is already connected, return
-    return;
-  }
-
   m_pStreamManager->m_readyEvent.Reset();
   CAutoSetEvent event(&m_pStreamManager->m_readyEvent);
 
@@ -1358,13 +1391,12 @@ void CSubtitleManager::SetSubtitle( int iStream )
   CStdString subtitlePath = "";
   Com::SmartPtr<IPin> newAudioStreamPin;
 
+  CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream = enableIndex;
+
   if (m_subtitleStreams[enableIndex]->m_subType == EXTERNAL)
   {
     /* External subtitle */
     DisconnectCurrentSubtitlePins();
-
-    if (! m_bSubtitlesVisible)
-      return;
 
     CDSStreamDetailSubtitleExternal *s = reinterpret_cast<CDSStreamDetailSubtitleExternal *>(m_subtitleStreams[enableIndex]);
 
@@ -1760,16 +1792,42 @@ void CSubtitleManager::DeleteSubtitleManager( ISubManager* pManager, DllLibSubs 
 
 void CSubtitleManager::SelectBestSubtitle()
 {
-  // If the splitter has not chosen a subtitle stream,
-  // select the first one.
-  int iIndex = -1;
-  if ( (iIndex = GetSubtitle()) == -1 )
-    SetSubtitle(0);
-  else
-  {
-    if (! m_subtitleStreams[iIndex]->connected)
-      SetSubtitle(iIndex);
+  int select = 0;
+	int iLibrary;
+
+  // set previuos selected stream
+	iLibrary = CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream;
+	if ((iLibrary < g_application.m_pPlayer->GetSubtitleCount()) && !(iLibrary < 0)) 
+		select = iLibrary;
+
+  // set first external sub
+  else if (m_subtitleStreams.size() != 0)
+  {  
+    int i = 0;
+    for (std::vector<CDSStreamDetailSubtitle *>::const_iterator it = m_subtitleStreams.begin();
+      it != m_subtitleStreams.end(); ++it, i++)
+    {
+      if ( (*it)->m_subType & EXTERNAL)
+      {  
+        select = i;
+        break;
+      }
+    }
   }
+  // set first internal subtitle
+  else 
+  {
+    int iIndex = -1;
+    if ( (iIndex = GetSubtitle()) == -1 )
+      select = 0;
+    else
+    {
+      if (! m_subtitleStreams[iIndex]->connected)
+      select = iIndex;
+    }
+  }
+  SetSubtitle(select);
+  SetSubtitleVisible(CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn);
 }
 
 #endif

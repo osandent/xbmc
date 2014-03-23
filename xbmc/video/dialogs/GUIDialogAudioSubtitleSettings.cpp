@@ -569,9 +569,7 @@ void CGUIDialogAudioSubtitleSettings::ShowSubsSelector()
 
   if (selected != -1 && g_application.m_pPlayer->GetSubtitle() != selected)
   {
-    CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleStream = selected;
     g_application.m_pPlayer->SetSubtitle(selected);    // Set the subtitle stream to the one selected
-
   } 
   else 
     if(pDlg->IsButtonPressed()) // Disable or enable subtitle stream.
