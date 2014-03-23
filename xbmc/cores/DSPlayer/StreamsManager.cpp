@@ -693,7 +693,7 @@ void CStreamsManager::SetSubfilterVisible( bool bVisible )
 
 void CStreamsManager::SetSubfilter(int iStream)
 {
-  if (! m_init || m_subfilterStreams.size() == 0 || !m_bSubfilterVisible)
+  if (! m_init)
     return;
 
   CSingleLock lock(m_lock);
@@ -719,12 +719,10 @@ void CStreamsManager::SetSubfilter(int iStream)
 
     m_pIAMStreamSelectSub->Enable( s->IAMStreamSelect_Index, AMSTREAMSELECTENABLE_ENABLE);	
     s->flags = AMSTREAMSELECTINFO_ENABLED; // for gui
-    s->connected = true;
-
-    return;	
+    s->connected = true;	
   }
 
-  if (m_pIAMStreamSelect)
+  else if (m_pIAMStreamSelect)
   {
 
     if (disableIndex >= 0 && m_subfilterStreams[disableIndex]->connected)
@@ -739,6 +737,7 @@ void CStreamsManager::SetSubfilter(int iStream)
       CLog::Log(LOGDEBUG, "%s Successfully selected subfilter stream", __FUNCTION__);
     }
   }
+  SetSubfilterVisible(CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn);
 }
 
 void CStreamsManager::SubInterface(SelectSubType action)
@@ -813,7 +812,6 @@ void CStreamsManager::SelectBestSubtitle()
     }
   }
   SetSubfilter(select);
-  SetSubfilterVisible(CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn);
 }
 
 void CStreamsManager::DisconnectCurrentSubtitlePins()
@@ -842,7 +840,6 @@ bool CStreamsManager::InitManager()
   m_hsubfilter = CGraphFilters::Get()->HasSubFilter();
   m_init = true;
   m_bIsXYVSFilter = false;
-  m_bSubfilterVisible = true;
   
   return true;
 }
@@ -1188,7 +1185,6 @@ void CSubtitleManager::Initialize()
 {
   // Initialize subtitles
   // 1. Create Subtitle Manager
-  m_bSubtitlesVisible = true;
 
   SIZE s; s.cx = 0; s.cy = 0;
   ISubManager *pManager = NULL;
@@ -1367,9 +1363,6 @@ void CSubtitleManager::GetSubtitleName( int iStream, CStdString &strStreamName )
 
 void CSubtitleManager::SetSubtitle( int iStream )
 {
-  if (m_subtitleStreams.size() == 0 || !m_bSubtitlesVisible)
-    return;
-  
   if (CGraphFilters::Get()->IsDVD())
     return; // currently not implemented
 
@@ -1405,6 +1398,7 @@ void CSubtitleManager::SetSubtitle( int iStream )
     s->flags = AMSTREAMSELECTINFO_ENABLED; // for gui
     s->connected = true;
 
+    SetSubtitleVisible(CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn);
     return;
   }
 
@@ -1418,6 +1412,7 @@ void CSubtitleManager::SetSubtitle( int iStream )
       m_pManager->SetSubPicProviderToInternal();
       m_subtitleStreams[enableIndex]->flags = AMSTREAMSELECTINFO_ENABLED;
       m_subtitleStreams[enableIndex]->connected = true;
+      SetSubtitleVisible(CMediaSettings::Get().GetCurrentVideoSettings().m_SubtitleOn);
       CLog::Log(LOGDEBUG, "%s Successfully selected subtitle stream", __FUNCTION__);
     }
   } 
