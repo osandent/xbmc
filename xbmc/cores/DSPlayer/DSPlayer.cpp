@@ -283,7 +283,8 @@ bool CDSPlayer::OpenFileInternal(const CFileItem& file)
 			{
 				dialog->Show();
 				while(!m_hReadyEvent.WaitMSec(1))
-					g_windowManager.ProcessRenderLoop(false);
+					if (!g_application.IsPlayingFullScreenVideo())
+						g_windowManager.ProcessRenderLoop(false);
 				dialog->Close();
 			}
 		}
