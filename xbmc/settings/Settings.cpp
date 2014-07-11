@@ -91,10 +91,13 @@
 #include "utils/AMLUtils.h"
 #endif
 
+#if defined(TARGET_DARWIN_OSX)
+#include "osx/DarwinUtils.h"
+#endif// defined(TARGET_DARWIN_OSX)
+
 #ifdef HAS_DS_PLAYER  
 #include "FGLoader.h"
 #endif
-
 
 #define SETTINGS_XML_FOLDER "special://xbmc/system/settings/"
 #define SETTINGS_XML_ROOT   "settings"
@@ -944,6 +947,10 @@ void CSettings::InitializeConditions()
   if (g_sysinfo.IsAppleTV2())
     m_settingsManager->AddCondition("isappletv2");
 #endif
+#ifdef TARGET_DARWIN_OSX
+  if (DarwinIsSnowLeopard())
+    m_settingsManager->AddCondition("osxissnowleopard");
+#endif
 #if defined(TARGET_WINDOWS) && defined(HAS_DX)
   m_settingsManager->AddCondition("has_dx");
   m_settingsManager->AddCondition("hasdxva2");
@@ -1000,6 +1007,7 @@ void CSettings::InitializeISettingsHandlers()
 #if defined(TARGET_LINUX) && !defined(TARGET_ANDROID) && !defined(__UCLIBC__)
   m_settingsManager->RegisterSettingsHandler(&g_timezone);
 #endif
+  m_settingsManager->RegisterSettingsHandler(&CMediaSettings::Get());
 }
 
 void CSettings::InitializeISubSettings()
