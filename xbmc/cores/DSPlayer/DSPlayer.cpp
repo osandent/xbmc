@@ -363,16 +363,18 @@ bool CDSPlayer::CloseFile(bool reopen)
 
 void CDSPlayer::GetVideoStreamInfo(SPlayerVideoStreamInfo &info)
 {
+	CSingleLock lock(m_StateSection);
 	info.width  = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetPictureWidth() : 0;
 	info.height = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetPictureHeight() : 0;
 	info.videoCodecName = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetVideoCodecName() : "";
-	info.videoAspectRatio = info.width / info.height;
+	info.videoAspectRatio = (float)info.width / (float)info.height;
 	info.stereoMode == "mono";
 }
 
 
 void CDSPlayer::GetAudioStreamInfo(int index, SPlayerAudioStreamInfo &info)
 {
+	CSingleLock lock(m_StateSection);
 	info.bitrate = (CStreamsManager::Get()) ? CStreamsManager::Get()->GetBitsPerSample() : 0;
     CStdString strStreamName;
 	if (CStreamsManager::Get()) CStreamsManager::Get()->GetAudioStreamName(index,strStreamName);
