@@ -1247,7 +1247,7 @@ msgstr "רסיבר תומך DTS-HD"
 
 msgctxt "#348"
 msgid "Enable passthrough"
-msgstr "הפעל passthrough"
+msgstr "אפשר passthrough"
 
 msgctxt "#349"
 msgid "TrueHD capable receiver"
@@ -1267,7 +1267,7 @@ msgstr "עמעם"
 
 msgctxt "#353"
 msgid "Black"
-msgstr "Black"
+msgstr "שחור"
 
 msgctxt "#354"
 msgid "Matrix trails"
@@ -2755,7 +2755,7 @@ msgstr "WPA2"
 
 msgctxt "#784"
 msgid "Applying network interface settings. Please wait."
-msgstr "מחיל הגדרות ממשק רשת. יש להמתין."
+msgstr "מחיל הגדרות ממשק רשת. נא להמתין."
 
 msgctxt "#785"
 msgid "Network interface restarted successfully."
@@ -4259,7 +4259,7 @@ msgstr "הפעלה מחדש"
 
 msgctxt "#13014"
 msgid "Minimise"
-msgstr "מזער"
+msgstr "מזעור"
 
 msgctxt "#13015"
 msgid "Power button action"
@@ -5043,7 +5043,7 @@ msgstr "מהירות מאוורר מינימלית"
 
 msgctxt "#13412"
 msgid "Play from here"
-msgstr "נגן מכאן"
+msgstr "ניגון מכאן"
 
 msgctxt "#13413"
 msgid "Downloading"
@@ -7527,11 +7527,11 @@ msgstr "מוזיקה  קלאסית"
 
 msgctxt "#19583"
 msgid "Folk/Traditional Music"
-msgstr "שירי עם / מוסיקה מסורתית"
+msgstr "שירי עם / מוזיקה מסורתית"
 
 msgctxt "#19584"
 msgid "Musical/Opera"
-msgstr "מוסיקה / אופרה"
+msgstr "מוזיקה / אופרה"
 
 msgctxt "#19585"
 msgid "Ballet"
@@ -8287,15 +8287,15 @@ msgstr "פרטי DVD-ROM"
 
 msgctxt "#20158"
 msgid "Network information"
-msgstr "פרטי הרשת"
+msgstr "פרטי רשת"
 
 msgctxt "#20159"
 msgid "Video information"
-msgstr "פרטי הווידאו"
+msgstr "פרטי וידאו"
 
 msgctxt "#20160"
 msgid "Hardware information"
-msgstr "פרטי החומרה"
+msgstr "פרטי חומרה"
 
 msgctxt "#20161"
 msgid "Total"
@@ -8399,7 +8399,7 @@ msgstr "השתמש סגנון תצוגת פוסטר לסדרות"
 
 msgctxt "#20186"
 msgid "Please wait"
-msgstr "יש להמתין"
+msgstr "נא להמתין"
 
 msgctxt "#20187"
 msgid "UPnP"
@@ -8479,7 +8479,7 @@ msgstr "צילומים מ־Android"
 
 msgctxt "#20244"
 msgid "Android Apps"
-msgstr "ישומי Android"
+msgstr "יישומי Android"
 
 msgctxt "#20250"
 msgid "Party on! (videos)"
@@ -8775,7 +8775,7 @@ msgstr "* כל העונות"
 
 msgctxt "#20367"
 msgid "Hide watched"
-msgstr "הסתרת פריטים שנצפו"
+msgstr "הסתר פריטים שנצפו"
 
 msgctxt "#20368"
 msgid "Prod code"
@@ -9075,7 +9075,7 @@ msgstr "שינוי תוכן"
 
 msgctxt "#20443"
 msgid "Do you want to refresh info for all"
-msgstr "האם לרענן כל פרטי הפריטים"
+msgstr "האם לרענן פרטים עבור כל הפריטים"
 
 msgctxt "#20444"
 msgid "items within this path?"
@@ -9943,7 +9943,7 @@ msgstr "הוקם"
 
 msgctxt "#21895"
 msgid "Themes"
-msgstr "נושאים"
+msgstr "ערכות נושא"
 
 msgctxt "#21896"
 msgid "Disbanded"
@@ -11443,7 +11443,7 @@ msgstr "שינוי הגדרות מעטפת ספציפיות. האפשריות ה
 
 msgctxt "#36105"
 msgid "Change the theme associated with your selected skin."
-msgstr "שינוי ערכת נושא המשויכת למעטפת שנחברה."
+msgstr "שינוי ערכת נושא המשויכת למעטפת שנבחרה."
 
 msgctxt "#36106"
 msgid "Change the colours of your selected skin."
@@ -11975,7 +11975,7 @@ msgstr "הפקודה לא תורץ כאשר הקלטה מתוזמנת להתחי
 
 msgctxt "#36243"
 msgid "The command to execute."
-msgstr "הפקודה כדי להריץ."
+msgstr "הפקודה להרצה."
 
 msgctxt "#36244"
 msgid "Time to subtract from the start time of the next scheduled recording."
@@ -12699,7 +12699,7 @@ msgstr "עבור לערוץ"
 
 msgctxt "#36427"
 msgid "Show information"
-msgstr "הצג מידע"
+msgstr "הצג פרטים"
 
 msgctxt "#36428"
 msgid "Record"
