@@ -401,7 +401,7 @@ void CXBMCRenderManager::FrameFinish()
 
   if(g_graphicsContext.IsFullScreenVideo())
 #ifdef HAS_DS_PLAYER
-  if (m_pRendererType == RENDERER_NORMAL)
+  //if (m_pRendererType == RENDERER_NORMAL)
     WaitPresentTime(m.timestamp);
 #else
   WaitPresentTime(m.timestamp);
