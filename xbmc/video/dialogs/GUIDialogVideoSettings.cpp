@@ -38,6 +38,7 @@
 #ifdef HAS_DS_PLAYER
 #include "cores/DSPlayer/Filters/RendererSettings.h"
 #include "cores/DSPlayer/dsgraph.h"
+#include "dialogs/GUIDialogSelect.h"
 #include "DSUtil/DSUtil.h"
 #include "utils/CharsetConverter.h"
 #include "guilib/LocalizeStrings.h"
@@ -205,13 +206,42 @@ void CGUIDialogVideoSettings::OnSettingAction(const CSetting *setting)
   // TODO
   else if (settingId == SETTING_VIDEO_MAKE_DEFAULT)
     Save();
+
 #ifdef HAS_DS_PLAYER
-  else if (settingId == VIDEO_SETTINGS_DS_FILTERS)
+  if (g_application.GetCurrentPlayer() == PCID_DSPLAYER)
   {
+    CGUIDialogSelect *pDlg = (CGUIDialogSelect *)g_windowManager.GetWindow(WINDOW_DIALOG_SELECT);
+      if (!pDlg)
+        return;
+    
+    CStdString filterName;
+
+    BeginEnumFilters(g_dsGraph->pFilterGraph, pEF, pBF)
+    {
+      if ((pBF == CGraphFilters::Get()->AudioRenderer.pBF && CGraphFilters::Get()->AudioRenderer.guid != CLSID_ReClock) || pBF == CGraphFilters::Get()->VideoRenderer.pBF)
+        continue;
+
+      Com::SmartQIPtr<ISpecifyPropertyPages> pProp = pBF;
+      CAUUID pPages;
+      if (pProp)
+      {
+        pProp->GetPages(&pPages);
+        if (pPages.cElems > 0)
+        {
+          g_charsetConverter.wToUTF8(GetFilterName(pBF), filterName);
+          pDlg->Add(filterName);
+        }
+        CoTaskMemFree(pPages.pElems);
+      }
+    }
+    EndEnumFilters
+    pDlg->SetHeading(55062);
+    pDlg->DoModal();
+
     IBaseFilter *pBF = NULL;
     CStdStringW strNameW;
 
-    g_charsetConverter.utf8ToW(setting->ToString(), strNameW);
+    g_charsetConverter.utf8ToW(pDlg->GetSelectedLabelText(), strNameW);
     if (SUCCEEDED(g_dsGraph->pFilterGraph->FindFilterByName(strNameW, &pBF)))
     {
       //Showing the property page for this filter
@@ -405,7 +435,12 @@ void CGUIDialogVideoSettings::InitializeSettings()
     entries.push_back(make_pair(55013, DS_STATS_2));
     entries.push_back(make_pair(55014, DS_STATS_3));
     AddSpinner(groupVideo, VIDEO_SETTINGS_DS_STATS, 55015, 0, static_cast<int>(m_dsStats), entries);
- }
+  }
+
+  if (g_application.GetCurrentPlayer() == PCID_DSPLAYER)
+  {
+    AddButton(groupVideo, VIDEO_SETTINGS_DS_FILTERS, 55062, 0);
+  }
 #endif
 
 #ifdef HAS_VIDEO_PLAYBACK
@@ -433,36 +468,6 @@ void CGUIDialogVideoSettings::InitializeSettings()
     AddPercentageSlider(groupVideoPlayback, SETTING_VIDEO_CONTRAST, 465, 0, static_cast<int>(videoSettings.m_Contrast), 14047, 1, 465, usePopup);
   if (g_renderManager.Supports(RENDERFEATURE_GAMMA))
     AddPercentageSlider(groupVideoPlayback, SETTING_VIDEO_GAMMA, 466, 0, static_cast<int>(videoSettings.m_Gamma), 14047, 1, 466, usePopup);
-/*
-#ifdef HAS_DS_PLAYER
-  if (g_application.GetCurrentPlayer() == PCID_DSPLAYER)
-  {
-    SettingInfo setting;
-    setting.type = SettingInfo::BUTTON;
-    setting.id = VIDEO_SETTINGS_DS_FILTERS;
-
-    BeginEnumFilters(g_dsGraph->pFilterGraph, pEF, pBF)
-    {
-      if ((pBF == CGraphFilters::Get()->AudioRenderer.pBF && CGraphFilters::Get()->AudioRenderer.guid != CLSID_ReClock) || pBF == CGraphFilters::Get()->VideoRenderer.pBF)
-        continue;
-
-      Com::SmartQIPtr<ISpecifyPropertyPages> pProp = pBF;
-      CAUUID pPages;
-      if (pProp)
-      {
-        pProp->GetPages(&pPages);
-        if (pPages.cElems > 0)
-        {
-          g_charsetConverter.wToUTF8(GetFilterName(pBF), setting.name);
-          m_settings.push_back(setting);
-        }
-        CoTaskMemFree(pPages.pElems);
-      }
-    }
-    EndEnumFilters
-  }
-#endif
-  */
   if (g_renderManager.Supports(RENDERFEATURE_NOISE))
     AddSlider(groupVideoPlayback, SETTING_VIDEO_VDPAU_NOISE, 16312, 0, videoSettings.m_NoiseReduction, "%2.2f", 0.0f, 0.01f, 1.0f, 16312, usePopup);
   if (g_renderManager.Supports(RENDERFEATURE_SHARPNESS))

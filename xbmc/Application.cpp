@@ -2212,17 +2212,6 @@ float CApplication::GetDimScreenSaverLevel() const
   return 100.0f;
 }
 
-void CApplication::NewFrame()
-{
-	// We just posted another frame. Keep track and notify.
-	{
-		CSingleLock lock(m_frameMutex);
-		m_frameCount++;
-	}
-
-	m_frameCond.notifyAll();
-}
-
 void CApplication::Render()
 {
   // do not render if we are stopped or in background
