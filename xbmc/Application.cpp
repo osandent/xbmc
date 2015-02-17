@@ -250,6 +250,8 @@
 #endif
 #ifdef HAS_DS_PLAYER
 #include "cores/DSPlayer/GUIDialogShaderList.h"
+#include "cores/DSPlayer/Dialogs/GUIDialogDSRules.h"
+#include "cores/DSPlayer/Dialogs/GUIDialogDSFilters.h"
 #endif
 
 /* PVR related include Files */
@@ -1393,6 +1395,10 @@ bool CApplication::Initialize()
     g_windowManager.Add(new CGUIDialogVisualisationPresetList);
     g_windowManager.Add(new CGUIDialogVideoSettings);
     g_windowManager.Add(new CGUIDialogAudioSubtitleSettings);
+#ifdef HAS_DS_PLAYER
+    g_windowManager.Add(new CGUIDialogDSRules);
+    g_windowManager.Add(new CGUIDialogDSFilters);
+#endif
     g_windowManager.Add(new CGUIDialogVideoBookmarks);
     // Don't add the filebrowser dialog - it's created and added when it's needed
     g_windowManager.Add(new CGUIDialogNetworkSetup);
@@ -3360,6 +3366,10 @@ bool CApplication::Cleanup()
     g_windowManager.Delete(WINDOW_DIALOG_MEDIA_SOURCE);
     g_windowManager.Delete(WINDOW_DIALOG_VIDEO_OSD_SETTINGS);
     g_windowManager.Delete(WINDOW_DIALOG_AUDIO_OSD_SETTINGS);
+#ifdef HAS_DS_PLAYER
+    g_windowManager.Delete(WINDOW_DIALOG_DSRULES);
+    g_windowManager.Delete(WINDOW_DIALOG_DSFILTERS);
+#endif
     g_windowManager.Delete(WINDOW_DIALOG_VIDEO_BOOKMARKS);
     g_windowManager.Delete(WINDOW_DIALOG_CONTENT_SETTINGS);
     g_windowManager.Delete(WINDOW_DIALOG_FAVOURITES);
