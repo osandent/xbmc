@@ -26,20 +26,20 @@
 #include "settings/dialogs/GUIDialogSettingsManualBase.h"
 #include "GUIDialogDSManager.h"
 
-class CGUIDialogDSFilters : public CGUIDialogSettingsManualBase
+class CGUIDialogDSPlayercoreFactory : public CGUIDialogSettingsManualBase
 {
 public:
-  CGUIDialogDSFilters();
-  virtual ~CGUIDialogDSFilters();
+  CGUIDialogDSPlayercoreFactory();
+  virtual ~CGUIDialogDSPlayercoreFactory();
 
-  static CGUIDialogDSFilters* Get();
+  static CGUIDialogDSPlayercoreFactory* Get();
   static void Destroy()
   {
     delete m_pSingleton;
     m_pSingleton = NULL;
   }
 
-  static int ShowDSFiltersList();
+  static int ShowDSPlayercoreFactory();
 
 protected:
 
@@ -59,12 +59,11 @@ protected:
 
   virtual void SetupView();
 
-  static void TypeOptionFiller(const CSetting *setting, std::vector< std::pair<std::string, std::string> > &list, std::string &current, void *data);
-  static CGUIDialogDSFilters* m_pSingleton;
-  CStdString GetFilterName(CStdString guid);
+  static CGUIDialogDSPlayercoreFactory* m_pSingleton;
+
 
   bool isEdited;
 
-  std::vector<DSConfigList *> m_filterList;
+  std::vector<DSConfigList *> m_ruleList;
   CGUIDialogDSManager* m_dsmanager;
 };

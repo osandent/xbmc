@@ -24,38 +24,8 @@
  */
 
 #include "settings/dialogs/GUIDialogSettingsManualBase.h"
+#include "GUIDialogDSManager.h"
 
-enum RuleType {
-  EDITATTR,
-  EDITATTREXTRA,
-  EDITATTRSHADER,
-  SPINNERATTR,
-  FILTER,
-  EXTRAFILTER,
-  SHADER
-};
-
-enum xmlType {
-  MEDIASCONFIG,
-  FILTERSCONFIG,
-  HOMEFILTERSCONFIG,
-  SHADERS
-};
-
-class DSRulesList
-{
-public:
-  DSRulesList(RuleType type);
-
-  CStdString strRuleAttr;
-  CStdString strRuleName;
-  CStdString strRuleValue;
-  CStdString settingRule;
-  int subNode;
-  int ruleLabel;
-  StringSettingOptionsFiller filler;
-  RuleType m_ruleType;
-};
 
 class CGUIDialogDSRules : public CGUIDialogSettingsManualBase
 {
@@ -71,10 +41,6 @@ public:
   }
 
   static int ShowDSRulesList();
-  void SetNewRule(bool b);
-  bool GetNewRule();
-  void SetRuleIndex(int index);
-  int GetRuleIndex();
 
 protected:
 
@@ -91,25 +57,18 @@ protected:
 
   // specialization of CGUIDialogSettingsManualBase
   virtual void InitializeSettings();
-
   virtual void SetupView();
 
-  static void UrlOptionFiller(const CSetting *setting, std::vector< std::pair<std::string, std::string> > &list, std::string &current, void *data);
-  static void FiltersConfigOptionFiller(const CSetting *setting, std::vector< std::pair<std::string, std::string> > &list, std::string &current, void *data);
-  static void ShadersOptionFiller(const CSetting *setting, std::vector< std::pair<std::string, std::string> > &list, std::string &current, void *data);
-  static bool compare_by_word(const DynamicStringSettingOption& lhs, const DynamicStringSettingOption& rhs);
   static CGUIDialogDSRules* m_pSingleton;
-  void LoadDsXML(CXBMCTinyXML *XML, xmlType type, TiXmlElement* &pNode, CStdString &xmlFile, bool forceCreate = false);
-  void InitRules(RuleType type, CStdString settingRule, int ruleLabel, CStdString strRuleName = "", CStdString strRuleAttr = "", StringSettingOptionsFiller filler = NULL, int subNode = 0);
 
   void ResetValue();
   void HideUnused();
+  void HideUnused(ConfigType type, ConfigType subType);
   void SetVisible(CStdString id, bool visible, bool isChild = false);
 
-  bool m_newrule;
-  int m_ruleIndex;
-  bool m_allowchange;
-  bool isEdited;
+  std::vector<DSConfigList *> m_ruleList;
+  CGUIDialogDSManager* m_dsmanager;
 
-  std::vector<DSRulesList *> m_ruleList;
+  bool isEdited;
+  bool m_allowchange;
 };

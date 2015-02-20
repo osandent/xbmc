@@ -911,7 +911,7 @@ bool CGUIWindowManager::IsWindowVisible(int id) const
 #ifdef HAS_DS_PLAYER
   if (id == WINDOW_DIALOG_VIDEO_OSD_SETTINGS) 
   {
-    if (IsWindowActive(WINDOW_DIALOG_DSRULES, false) || IsWindowActive(WINDOW_DIALOG_DSFILTERS, false))
+    if (IsWindowActive(WINDOW_DIALOG_DSRULES, false) || IsWindowActive(WINDOW_DIALOG_DSFILTERS, false) || IsWindowActive(WINDOW_DIALOG_DSPLAYERCORE, false))
       return true;
   }
 #endif

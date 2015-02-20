@@ -252,6 +252,7 @@
 #include "cores/DSPlayer/GUIDialogShaderList.h"
 #include "cores/DSPlayer/Dialogs/GUIDialogDSRules.h"
 #include "cores/DSPlayer/Dialogs/GUIDialogDSFilters.h"
+#include "cores/DSPlayer/Dialogs/GUIDialogDSPlayercoreFactory.h"
 #endif
 
 /* PVR related include Files */
@@ -1402,6 +1403,7 @@ bool CApplication::Initialize()
 #ifdef HAS_DS_PLAYER
     g_windowManager.Add(new CGUIDialogDSRules);
     g_windowManager.Add(new CGUIDialogDSFilters);
+    g_windowManager.Add(new CGUIDialogDSPlayercoreFactory);
 #endif
     g_windowManager.Add(new CGUIDialogVideoBookmarks);
     // Don't add the filebrowser dialog - it's created and added when it's needed
@@ -3373,6 +3375,7 @@ bool CApplication::Cleanup()
 #ifdef HAS_DS_PLAYER
     g_windowManager.Delete(WINDOW_DIALOG_DSRULES);
     g_windowManager.Delete(WINDOW_DIALOG_DSFILTERS);
+    g_windowManager.Delete(WINDOW_DIALOG_DSPLAYERCORE);
 #endif
     g_windowManager.Delete(WINDOW_DIALOG_VIDEO_BOOKMARKS);
     g_windowManager.Delete(WINDOW_DIALOG_CONTENT_SETTINGS);
