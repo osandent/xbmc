@@ -6370,6 +6370,9 @@
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Dialogs\GUIDialogDSPlayercoreFactory.h">
       <Filter>cores\DSPlayer\Dialogs</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\LAVAudioSettings.h">
+      <Filter>cores\DSPlayer\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\xbmc\win32\XBMC_PC.rc">

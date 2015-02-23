@@ -47,6 +47,8 @@
 
 #include "utils/StreamDetails.h"
 #include "Filters/IDirectVobSub.h"
+#include "Filters/LAVAudioSettings.h"
+#include "Filters/IffdshowBase.h"
 
 #define XYVSFILTER_SUB_EXTERNAL 6590018
 #define XYVSFILTER_SUB_INTERNAL 6590016
@@ -200,6 +202,12 @@ public:
   void SetSubfilter(int iStream);
   void SelectBestSubtitle();
   int AddSubtitle(const std::string& subFilePath);
+  void SetAVDelay(float fValue = 0.0f);
+  float GetAVDelay();
+  bool SetAudioInterface();
+  void resetDelayInterface();
+  void SetSubTitleDelay(float fValue = 0.0f);
+  float GetSubTitleDelay();
 
   int  GetEditionsCount();
   int  GetEdition();
@@ -277,6 +285,8 @@ protected:
   std::vector<CDSStreamDetailEdition *> m_editionStreams;
   bool m_mkveditions;
   Com::SmartPtr<IDirectVobSub> m_pIDirectVobSub;
+  Com::SmartPtr<IffdshowBaseW> m_pIFFDSwhoAudioSettings;
+  Com::SmartPtr<ILAVAudioSettings> m_pILAVAudioSettings;
   Com::SmartPtr<IAMStreamSelect> m_pIAMStreamSelect;
   Com::SmartPtr<IAMStreamSelect> m_pIAMStreamSelectSub;
   Com::SmartPtr<IFilterGraph2> m_pGraphBuilder;
@@ -287,6 +297,10 @@ protected:
   bool m_hsubfilter;
   bool m_init;
   bool m_bIsXYVSFilter;
+  bool m_bIsLavAudio;
+  bool m_bIsFFDSAudio;
+  float m_InitialAudioDelay;
+  float m_InitialSubsDelay;
 
   CDSStreamDetailVideo m_videoStream;
   CCriticalSection m_lock;
