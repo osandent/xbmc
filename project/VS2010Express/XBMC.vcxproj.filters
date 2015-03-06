@@ -3228,6 +3228,9 @@
     <ClCompile Include="..\..\xbmc\cores\DSPlayer\DSPlayerDatabase.cpp">
       <Filter>cores\DSPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\xbmc\cores\DSPlayer\Filters\madVRAllocatorPresenter.cpp">
+      <Filter>cores\DSPlayer\Filters\Video Renderers</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\xbmc\cores\DSPlayer\Utils\DSFilterEnumerator.cpp">
       <Filter>cores\DSPlayer\Utils</Filter>
     </ClCompile>
@@ -6355,6 +6358,9 @@
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\IDirectVobSub.h">
       <Filter>cores\DSPlayer\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\madVRAllocatorPresenter.h">
+      <Filter>cores\DSPlayer\Filters\Video Renderers</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Utils\DSFilterEnumerator.h">
       <Filter>cores\DSPlayer\Utils</Filter>
     </ClInclude>
@@ -6371,6 +6377,9 @@
       <Filter>cores\DSPlayer\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\LAVAudioSettings.h">
+      <Filter>cores\DSPlayer\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\mvrInterfaces.h">
       <Filter>cores\DSPlayer\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>

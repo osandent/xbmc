@@ -253,6 +253,8 @@
 #include "cores/DSPlayer/Dialogs/GUIDialogDSRules.h"
 #include "cores/DSPlayer/Dialogs/GUIDialogDSFilters.h"
 #include "cores/DSPlayer/Dialogs/GUIDialogDSPlayercoreFactory.h"
+/*MADVR*/
+#include "cores/DSPlayer/GraphFilters.h"
 #endif
 
 /* PVR related include Files */
@@ -2189,12 +2191,14 @@ bool CApplication::RenderNoPresent()
 //  g_graphicsContext.AcquireCurrentContext();
 
   g_graphicsContext.Lock();
+  bool UsingMadVr = CGraphFilters::Get()->UsingMadVr();
 
   // dont show GUI when playing full screen video
   if (g_graphicsContext.IsFullScreenVideo())
   {
     g_graphicsContext.SetRenderingResolution(g_graphicsContext.GetVideoResolution(), false);
-    g_renderManager.Render(true, 0, 255);
+    if (!UsingMadVr)
+      g_renderManager.Render(true, 0, 255);
 
     // close window overlays
     CGUIDialog *overlay = (CGUIDialog *)g_windowManager.GetWindow(WINDOW_DIALOG_VIDEO_OVERLAY);
@@ -5854,7 +5858,12 @@ bool CApplication::AlwaysProcess(const CAction& action)
 
 bool CApplication::IsCurrentThread() const
 {
-  return CThread::IsCurrentThread(m_threadID);
+  bool UsingMadVr = CGraphFilters::Get()->UsingMadVr();
+
+  if (!UsingMadVr)
+    return CThread::IsCurrentThread(m_threadID);
+  else
+    return true;
 }
 
 void CApplication::SetRenderGUI(bool renderGUI)
