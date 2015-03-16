@@ -30,11 +30,37 @@
 #include "utils/log.h"
 #include "video/VideoInfoTag.h"
 #include "URL.h"
+#ifdef HAS_DS_PLAYER
+#include "application.h"
+#endif
+
+#ifdef HAS_DS_PLAYER
+int CGUIDialogSimpleMenu::GetDefaultPlayer(const CFileItem &item)
+{
+  VECPLAYERCORES vecCores;
+  if (item.IsVideoDb())
+  {
+    CFileItem item2(*item.GetVideoInfoTag());
+    CPlayerCoreFactory::Get().GetPlayers(item2, vecCores);
+  }
+  else
+    CPlayerCoreFactory::Get().GetPlayers(item, vecCores);
+
+  if (vecCores.size())
+    return vecCores[0];
+
+  return PCID_NONE;
+}
+#endif
 
 bool CGUIDialogSimpleMenu::ShowPlaySelection(CFileItem& item)
 {
   /* if asked to resume somewhere, we should not show anything */
-  if (item.m_lStartOffset)
+  if (item.m_lStartOffset
+#ifdef HAS_DS_PLAYER
+    || (GetDefaultPlayer(item) != EPC_DVDPLAYER && g_application.m_eForcedNextPlayer != EPC_DVDPLAYER)
+#endif
+    )
     return true;
 
   if (CSettings::Get().GetInt("disc.playback") != BD_PLAYBACK_SIMPLE_MENU)
