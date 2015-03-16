@@ -143,7 +143,10 @@ public:
   bool DestroyWindow();
   void StartServices();
   void StopServices();
-
+#ifdef HAS_DS_PLAYER
+  void RenderMadvr();
+  CEvent m_renderMadvrEvent;
+#endif
   bool StartServer(enum ESERVERS eServer, bool bStart, bool bWait = false);
 
   /*!
