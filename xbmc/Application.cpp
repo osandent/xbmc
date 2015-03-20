@@ -2247,7 +2247,7 @@ void CApplication::RenderMadvr()
 
   g_infoManager.UpdateFPS();
 
-  g_Windowing.BeginRender();
+  //g_Windowing.BeginRender();
  
   //g_renderManager.FrameMove();
   
@@ -2255,7 +2255,7 @@ void CApplication::RenderMadvr()
   
   //g_renderManager.FrameFinish();
   
-  g_Windowing.EndRender();
+  //g_Windowing.EndRender();
 
   g_windowManager.AfterRender();
 
