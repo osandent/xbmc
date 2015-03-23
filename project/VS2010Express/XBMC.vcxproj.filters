@@ -3249,6 +3249,12 @@
     <ClCompile Include="..\..\xbmc\cores\DSPlayer\Dialogs\GUIDialogDSPlayercoreFactory.cpp">
       <Filter>cores\DSPlayer\Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\xbmc\cores\DSPlayer\Filters\MadvrSettings.cpp">
+      <Filter>cores\DSPlayer\Filters\Video Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xbmc\cores\DSPlayer\Dialogs\GUIDialogMadvrScaling.cpp">
+      <Filter>cores\DSPlayer\Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\xbmc\win32\pch.h">
@@ -6390,6 +6396,12 @@
     </ClInclude>
     <ClInclude Include="..\..\xbmc\cores\DSPlayer\IPaintCallback.h">
       <Filter>cores\DSPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xbmc\cores\DSPlayer\Filters\MadvrSettings.h">
+      <Filter>cores\DSPlayer\Filters\Video Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xbmc\cores\DSPlayer\Dialogs\GUIDialogMadvrScaling.h">
+      <Filter>cores\DSPlayer\Dialogs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
