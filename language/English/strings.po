@@ -16760,7 +16760,7 @@ msgid " - change dither for every frame"
 msgstr ""
 
 msgctxt "#70500"
-msgid "Reduce bandig artifacts"
+msgid "Reduce banding artifacts"
 msgstr ""
 
 msgctxt "#70501"
