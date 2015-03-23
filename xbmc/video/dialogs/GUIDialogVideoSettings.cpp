@@ -700,12 +700,13 @@ void CGUIDialogVideoSettings::InitializeSettings()
 void CGUIDialogVideoSettings::OnInitWindow()
 {
   CGUIDialogSettingsManualBase::OnInitWindow();
+  m_isMadvr = CGraphFilters::Get()->UsingMadVr();
   HideUnused();
 }
 
 void CGUIDialogVideoSettings::HideUnused()
 {
-  if (!m_allowchange)
+  if (!m_allowchange || !m_isMadvr)
     return;
 
   m_allowchange = false;
