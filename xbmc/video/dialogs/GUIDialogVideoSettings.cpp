@@ -387,7 +387,7 @@ void CGUIDialogVideoSettings::InitializeSettings()
 {
   CGUIDialogSettingsManualBase::InitializeSettings();
 
-  m_isMadvr = CGraphFilters::Get()->UsingMadVr();
+  m_isMadvr = CGraphFilters::Get()->UsingMadVr() && CSettings::Get().GetBool("dsplayer.managemadvrsettings");
 
   CSettingCategory *category = AddCategory("audiosubtitlesettings", -1);
   if (category == NULL)
@@ -682,7 +682,8 @@ void CGUIDialogVideoSettings::InitializeSettings()
 void CGUIDialogVideoSettings::OnInitWindow()
 {
   CGUIDialogSettingsManualBase::OnInitWindow();
-  m_isMadvr = CGraphFilters::Get()->UsingMadVr();
+  m_isMadvr = CGraphFilters::Get()->UsingMadVr() && CSettings::Get().GetBool("dsplayer.managemadvrsettings");
+
   HideUnused();
 }
 
