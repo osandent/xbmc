@@ -39,6 +39,7 @@
 #include "settings/Settings.h"
 #include "guilib/GUIFontManager.h"
 #include "cores/DataCacheCore.h"
+#include "cores/DSPlayer/GraphFilters.h"
 
 #if defined(HAS_GL)
   #include "LinuxRendererGL.h"
@@ -464,8 +465,8 @@ unsigned int CXBMCRenderManager::PreInit()
 #ifdef HAS_DS_PLAYER
     if (rendtype == RENDERER_NORMAL)
       m_pRenderer = new CWinRenderer();
-      else
-        m_pRenderer = new CWinDsRenderer();
+    else
+      m_pRenderer = new CWinDsRenderer();
 
       m_pRendererType = rendtype;
 #else
@@ -905,7 +906,11 @@ void CXBMCRenderManager::UpdateResolution()
   if (m_bReconfigured)
   {
     CRetakeLock<CExclusiveLock> lock(m_sharedSection);
-    if (g_graphicsContext.IsFullScreenVideo() && g_graphicsContext.IsFullScreenRoot())
+    if (g_graphicsContext.IsFullScreenVideo() && g_graphicsContext.IsFullScreenRoot()
+#ifdef HAS_DS_PLAYER
+      && !CGraphFilters::Get()->UsingMadVr()
+#endif
+      )
     {
       RESOLUTION res = GetResolution();
       g_graphicsContext.SetVideoResolution(res);

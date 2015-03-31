@@ -2282,7 +2282,7 @@ void CApplication::Render()
   MEASURE_FUNCTION;
 
 #ifdef HAS_DS_PLAYER
-  if (CGraphFilters::Get()->ReadyMadVr())
+  if (CGraphFilters::Get()->ReadyMadVr() && g_graphicsContext.IsFullScreenVideo())
   {
     if (m_pPlayer->IsPausedPlayback())
     {
@@ -2294,6 +2294,11 @@ void CApplication::Render()
       m_renderMadvrEvent.Reset();
       m_renderMadvrEvent.WaitMSec(500);
     }
+    return;
+  } 
+  else if(CGraphFilters::Get()->ReadyMadVr())
+  {
+    m_pPlayer->ClosePlayer();
     return;
   }
 #endif  
