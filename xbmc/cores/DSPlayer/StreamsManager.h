@@ -49,6 +49,7 @@
 #include "Filters/IDirectVobSub.h"
 #include "Filters/LAVAudioSettings.h"
 #include "Filters/IffdshowBase.h"
+#include "Filters/IffdshowDecAudio.h"
 
 #define XYVSFILTER_SUB_EXTERNAL 6590018
 #define XYVSFILTER_SUB_INTERNAL 6590016
