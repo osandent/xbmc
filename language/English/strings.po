@@ -16387,6 +16387,10 @@ msgctxt "#60022"
 msgid "- Audio codec"
 msgstr ""
 
+msgctxt "#60023"
+msgid "- Stage"
+msgstr ""
+
 msgctxt "#61001"
 msgid "Save changes?"
 msgstr ""
